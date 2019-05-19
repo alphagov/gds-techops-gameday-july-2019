@@ -83,14 +83,14 @@ if ($build) {
   if (Test-Path $TARGET_DIR) { Remove-Item $TARGET_DIR -Force -Recurse }
   New-Item -ItemType "directory" $TARGET_DIR/
 
-  Copy-Item -Recurse *.py ./$TARGET_DIR/
-  Copy-Item -Recurse templates/ ./$TARGET_DIR/templates/
-  Copy-Item -Recurse assets/ ./$TARGET_DIR/assets/
+  Copy-Item -Recurse src/*.py ./$TARGET_DIR/
+  Copy-Item -Recurse src/templates/ ./$TARGET_DIR/templates/
+  Copy-Item -Recurse src/assets/ ./$TARGET_DIR/assets/
 
   pip3 install -r requirements.txt -t $TARGET_DIR
 
   if (!$run) {
-    $ZIPFILE = ".\gtg_api.zip"
+    $ZIPFILE = ".\gge.zip"
     if (Test-Path $ZIPFILE) { Remove-Item $ZIPFILE -Force }
     Compress-Archive .\$TARGET_DIR\* -DestinationPath $ZIPFILE
   }
