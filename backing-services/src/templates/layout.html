@@ -4,7 +4,7 @@
 <head>
   {% block head %}
   <meta charset="utf-8" />
-  <title>{% block title %}{% endblock %}</title>
+  <title>GDS Gameplay Environment - {% block title %}{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0b0c0c" />
 
@@ -18,11 +18,19 @@
   <link rel="apple-touch-icon" href="/assets/images/govuk-apple-touch-icon.png">
 
   <!--[if !IE 8]><!-->
-  <link href="assets/govuk-frontend-{{ govukfrontendver }}.min.css" rel="stylesheet" />
+  <link href="/assets/govuk-frontend-{{ gfe_ver }}.min.css" rel="stylesheet" />
   <!--<![endif]-->
 
+  <style>
+  #main-content, #main-content * {
+    font-family: nta,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  </style>
+
   <!--[if IE 8]>
-    <link href="assets/govuk-frontend-ie8-{{ govukfrontendver }}.min.css" rel="stylesheet" />
+    <link href="/assets/govuk-frontend-ie8-{{ gfe_ver }}.min.css" rel="stylesheet" />
   <![endif]-->
 
   <meta property="og:image" content="/assets/images/govuk-opengraph-image.png">
@@ -32,7 +40,6 @@
 <body class="govuk-template__body ">
   <script>
     document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
-
   </script>
 
   <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
@@ -55,8 +62,51 @@
           </span>
         </a>
       </div>
+      <div class="govuk-header__content">
+        <a href="/" class="govuk-header__link govuk-header__link--service-name">
+          GDS Gameplay Environment
+        </a>
+        {% if loggedin %}
+        <button type="button" role="button" class="govuk-header__menu-button js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+        <nav>
+          <ul id="navigation" class="govuk-header__navigation " aria-label="Top Level Navigation">
+            <li class="govuk-header__navigation-item{% if nav_dashboard %} govuk-header__navigation-item--active{% endif %}">
+              <a class="govuk-header__link" href="/">
+                Dashboard
+              </a>
+            </li>
+            <li class="govuk-header__navigation-item{% if nav_docs %} govuk-header__navigation-item--active{% endif %}">
+              <a class="govuk-header__link" href="/docs">
+                Documentation
+              </a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="/logout">
+                Logout
+              </a>
+            </li>
+          </ul>
+        </nav>
+        {% endif %}
+      </div>
     </div>
   </header>
+
+  <div class="app-phase-banner__wrapper">
+    <div class="govuk-phase-banner app-phase-banner govuk-width-container">
+      <p class="govuk-phase-banner__content">
+        <strong class="govuk-tag govuk-phase-banner__content__tag " style="background-color:red">
+        GAMEPLAY
+        </strong>
+        <strong class="govuk-tag govuk-phase-banner__content__tag ">
+        INTERNAL
+        </strong>
+        <span class="govuk-phase-banner__text">
+        This is an internal service and gameplay environment.
+        </span>
+      </p>
+    </div>
+  </div>
 
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper " id="main-content" role="main">
@@ -87,7 +137,7 @@
     {% endblock %}
   </footer>
 
-  <script src="assets/govuk-frontend-{{ govukfrontendver }}.min.js"></script>
+  <script src="/assets/govuk-frontend-{{ gfe_ver }}.min.js"></script>
   <script>window.GOVUKFrontend.initAll()</script>
 </body>
 
