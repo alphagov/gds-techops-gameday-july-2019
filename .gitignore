@@ -4,6 +4,8 @@
 
 # Build
 .target
+*.zip
+setup.cfg
 
 # Terraform
 .terraform
