@@ -114,3 +114,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+**/.terraform
+**/*.tfstate
+**/*.tfstate.backup
+**/*.tfstate.*.backup
+*.tfstate*
+.terraform/
