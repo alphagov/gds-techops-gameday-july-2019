@@ -16,6 +16,8 @@ def setup_db
       t.string 'first_name'
       t.string 'last_name'
 
+      t.boolean 'anonymous', default: false
+
       t.datetime 'created_at'
       t.datetime 'updated_at'
     end
@@ -27,6 +29,15 @@ class Registration < ActiveRecord::Base
 
   alias_attribute :guid, :id
 
-  validates :first_name, presence: true, length: { minimum: 2, maximum: 64 }
-  validates :last_name, presence: true, length: { minimum: 2, maximum: 64 }
+  validates_each :first_name, :last_name do |record, attr, val|
+    unless record.anonymous
+      if val.nil?
+        record.errors.add(attr, 'must be present')
+      end
+
+      unless !val.nil? && (2 <= val.length && val.length <= 64)
+        record.errors.add(attr, 'must have length between 2 and 64')
+      end
+    end
+  end
 end
