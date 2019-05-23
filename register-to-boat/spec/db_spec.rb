@@ -81,6 +81,23 @@ describe 'Database' do
         r.anonymous = true
         expect(r.valid?).to be_truthy
       end
+
+      it 'a user can be made anonymous' do
+        r = Registration.new
+        r.first_name = 'Firstname'
+        r.last_name = 'Lastname'
+
+        expect(r.valid?).to be_truthy
+
+        r.first_name = nil
+        r.last_name = nil
+
+        expect(r.valid?).to be_falsey
+
+        r.anonymous = true
+
+        expect(r.valid?).to be_truthy
+      end
     end
   end
 end
