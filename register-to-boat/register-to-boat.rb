@@ -20,7 +20,15 @@ post '/form' do
 end
 
 get '/stats' do
-  erb :stats
+  erb :stats, locals: {
+    registrations: [
+      { name: 'Today', value: 0 },
+      { name: 'This week', value: 0 },
+      { name: 'This month', value: 0 },
+      { name: 'This year', value: 0 },
+      { name: 'All time', value: 0 },
+    ],
+  }
 end
 
 get '/500' do
