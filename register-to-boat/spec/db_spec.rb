@@ -1,9 +1,15 @@
-require_relative '../db'
-
 describe 'Database' do
 
   before(:all) do
-    setup_db
+    setup_db_connection
+  end
+
+  before(:each) do
+    create_database(recreate: true)
+  end
+
+  after(:all) do
+    create_database(recreate: true)
   end
 
   context 'Registration' do
