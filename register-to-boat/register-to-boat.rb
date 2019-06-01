@@ -1,4 +1,10 @@
 require 'sinatra'
+require_relative 'db'
+
+unless $0.match?(/rspec/)
+  setup_db_connection
+  create_database
+end
 
 # We want to call our templates template.html.erb
 Tilt.register Tilt::ERBTemplate, 'html.erb'

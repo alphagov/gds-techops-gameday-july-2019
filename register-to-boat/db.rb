@@ -1,6 +1,8 @@
+require 'date'
+
 require 'active_record'
 
-def setup_db
+def setup_db_connection
   ActiveRecord::Base.establish_connection(
     adapter: :postgresql,
     host: ENV.fetch('DB_HOST', 'localhost'),
@@ -8,18 +10,23 @@ def setup_db
     username: ENV.fetch('DB_USERNAME', 'postgres'),
     password: ENV.fetch('DB_PASSWORD', 'postgres'),
   )
-
   ActiveRecord::Schema.define(version: 0) do
     enable_extension 'pgcrypto' unless extension_enabled?('pgcrypto')
+  end
+end
 
-    create_table 'registrations', id: :uuid, force: true do |t|
-      t.string 'first_name'
-      t.string 'last_name'
+def create_database(recreate: false)
+  if !ActiveRecord::Base.connection.table_exists?('registrations') || recreate
+    ActiveRecord::Schema.define(version: 0) do
+      create_table 'registrations', id: :uuid, force: recreate do |t|
+        t.string 'first_name'
+        t.string 'last_name'
 
-      t.boolean 'anonymous', default: false
+        t.boolean 'anonymous', default: false
 
-      t.datetime 'created_at'
-      t.datetime 'updated_at'
+        t.datetime 'created_at'
+        t.datetime 'updated_at'
+      end
     end
   end
 end
