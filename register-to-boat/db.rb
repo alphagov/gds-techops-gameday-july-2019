@@ -36,6 +36,22 @@ class Registration < ActiveRecord::Base
 
   alias_attribute :guid, :id
 
+  scope :registrations_today, -> {
+    where("created_at >= ?", Time.now.beginning_of_day)
+  }
+
+  scope :registrations_this_week, -> {
+    where("created_at >= ?", 7.days.ago.beginning_of_week)
+  }
+
+  scope :registrations_this_month, -> {
+    where("created_at >= ?", Time.now.beginning_of_month)
+  }
+
+  scope :registrations_this_year, -> {
+    where("created_at >= ?", Time.now.beginning_of_year)
+  }
+
   validates_each :first_name, :last_name do |record, attr, val|
     unless record.anonymous
       if val.nil?

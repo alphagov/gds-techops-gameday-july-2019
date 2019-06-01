@@ -105,5 +105,48 @@ describe 'Database' do
         expect(r.valid?).to be_truthy
       end
     end
+
+    context 'Stats' do
+
+      before { Timecop.freeze(Time.local(2019, 05, 15, 12, 0, 0)) }
+      after  { Timecop.return }
+
+      it 'can be computed' do
+      expect(Registration.count).to eq(0)
+
+      new_reg = -> (time) {
+        r = Registration.new
+        r.last_name  = 'Ever'
+        r.first_name = 'Greatest'
+        r.created_at = time
+        r.save
+      }
+
+      2.times { new_reg.call(Time.new(0))                 }
+      expect(Registration.count).to eq(2)
+
+      2.times { new_reg.call(Time.now.beginning_of_year) }
+      expect(Registration.registrations_this_year.count).to  eq(2)
+      expect(Registration.count).to                          eq(4)
+
+      2.times { new_reg.call(Time.now.beginning_of_month) }
+      expect(Registration.registrations_this_month.count).to eq(2)
+      expect(Registration.registrations_this_year.count).to  eq(4)
+      expect(Registration.count).to                          eq(6)
+
+      2.times { new_reg.call(Time.now.beginning_of_week) }
+      expect(Registration.registrations_this_week.count).to  eq(2)
+      expect(Registration.registrations_this_month.count).to eq(4)
+      expect(Registration.registrations_this_year.count).to  eq(6)
+      expect(Registration.count).to                          eq(8)
+
+      2.times { new_reg.call(Time.now.beginning_of_day) }
+      expect(Registration.registrations_today.count).to      eq(2)
+      expect(Registration.registrations_this_week.count).to  eq(4)
+      expect(Registration.registrations_this_month.count).to eq(6)
+      expect(Registration.registrations_this_year.count).to  eq(8)
+      expect(Registration.count).to                          eq(10)
+      end
+    end
   end
 end
