@@ -14,15 +14,25 @@ get '/' do
 end
 
 get '/register' do
-  erb :register
+  erb :register, locals: {
+    registration: Registration.new,
+  }
 end
 
-get '/form' do
-  erb :form
-end
+post '/register' do
+  registration = Registration.new
+  registration.first_name = params[:first_name]
+  registration.last_name = params[:last_name]
 
-post '/form' do
-  raise 'Not implemented'
+  unless registration.valid?
+    return erb :register, locals: {
+      registration: registration,
+    }
+  end
+
+  registration.save!
+
+  erb :success, locals: { registration: registration }
 end
 
 get '/stats' do

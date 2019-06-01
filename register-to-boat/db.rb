@@ -54,9 +54,7 @@ class Registration < ActiveRecord::Base
 
   validates_each :first_name, :last_name do |record, attr, val|
     unless record.anonymous
-      if val.nil?
-        record.errors.add(attr, 'must be present')
-      end
+      record.errors.add(attr, 'must be present') if val.nil?
 
       unless !val.nil? && (2 <= val.length && val.length <= 64)
         record.errors.add(attr, 'must have length between 2 and 64')
