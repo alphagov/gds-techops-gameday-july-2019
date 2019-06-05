@@ -1,4 +1,10 @@
 require 'sinatra'
+require_relative 'db'
+
+unless $0.match?(/rspec/)
+  setup_db_connection
+  create_database
+end
 
 # We want to call our templates template.html.erb
 Tilt.register Tilt::ERBTemplate, 'html.erb'
@@ -8,27 +14,37 @@ get '/' do
 end
 
 get '/register' do
-  erb :register
+  erb :register, locals: {
+    registration: Registration.new,
+  }
 end
 
-get '/form' do
-  erb :form
-end
+post '/register' do
+  registration = Registration.new
+  registration.first_name = params[:first_name]
+  registration.last_name = params[:last_name]
 
-post '/form' do
-  raise 'Not implemented'
+  unless registration.valid?
+    return erb :register, locals: {
+      registration: registration,
+    }
+  end
+
+  registration.save!
+
+  erb :success, locals: { registration: registration }
 end
 
 get '/stats' do
-  erb :stats, locals: {
-    registrations: [
-      { name: 'Today', value: 0 },
-      { name: 'This week', value: 0 },
-      { name: 'This month', value: 0 },
-      { name: 'This year', value: 0 },
-      { name: 'All time', value: 0 },
-    ],
-  }
+  locals = {registrations: [
+    { name: 'Today',      value: Registration.registrations_today.count },
+    { name: 'This week',  value: Registration.registrations_this_week.count },
+    { name: 'This month', value: Registration.registrations_this_month.count },
+    { name: 'This year',  value: Registration.registrations_this_year.count },
+    { name: 'All time',   value: Registration.count },
+  ]}
+
+  erb :stats, locals: locals
 end
 
 get '/500' do
