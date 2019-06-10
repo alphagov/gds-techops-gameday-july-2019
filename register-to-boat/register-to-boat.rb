@@ -1,5 +1,6 @@
 require 'sinatra'
 require_relative 'db'
+require 'rest-client'
 
 unless $0.match?(/rspec/)
   setup_db_connection
@@ -23,6 +24,10 @@ post '/register' do
   registration = Registration.new
   registration.first_name = params[:first_name]
   registration.last_name = params[:last_name]
+
+
+  splunk_url = 'http://admin:correcthorsebatterystaple@splunk.com/services/messages'
+  restclient.post splunk_url, {name: testMessage, value: "Test Message"}
 
   unless registration.valid?
     return erb :register, locals: {
