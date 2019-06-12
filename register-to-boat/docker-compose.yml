@@ -22,7 +22,7 @@ services:
     depends_on:
       - db
       - splunk
-    entrypoint: "rackup --host 0.0.0.0 --port 4567"
+    command: ["rackup", "config.ru", "--host", "0.0.0.0", "--port", "4567"]
 
 
   splunk:
