@@ -38,8 +38,8 @@ end
 
 post '/register' do
 
-  if params[:first_name] == "Troll" && params[:last_name] == "Face"
-    splunk_message "'Troll Face' registered"
+  if params[:first_name] == "Troll" && params[:last_name].starts_with?("Face")
+    splunk_message "Troll user registerd with name: " + params[:last_name]
   end
 
   registration = Registration.new
