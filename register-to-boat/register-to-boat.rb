@@ -30,7 +30,7 @@ post '/register' do
     uri = URI.parse("https://splunk:8089/services/messages")
     request = Net::HTTP::Post.new(uri)
     request.basic_auth("admin", "correcthorsebatterystaple")
-    request.body = "name=userAlert&value=Troll Face detected"
+    request.body = "name=userAlert&value='Troll Face' registered"
     req_options = {
       use_ssl: uri.scheme == "https",
       verify_mode: OpenSSL::SSL::VERIFY_NONE,
