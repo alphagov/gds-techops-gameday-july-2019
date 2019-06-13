@@ -1,6 +1,5 @@
 require 'sinatra'
 require_relative 'db'
-#require 'rest-client'
 require 'net/http'
 require 'uri'
 require 'openssl'
@@ -23,14 +22,11 @@ get '/register' do
   }
 end
 
-post '/register' do
-
-  if params[:first_name] == "Troll" && params[:last_name] == "Face"
-
+def splunk_message(message)
     uri = URI.parse("https://splunk:8089/services/messages")
     request = Net::HTTP::Post.new(uri)
     request.basic_auth("admin", "correcthorsebatterystaple")
-    request.body = "name=userAlert&value='Troll Face' registered"
+    request.body = "name=userAlert&value=" + message
     req_options = {
       use_ssl: uri.scheme == "https",
       verify_mode: OpenSSL::SSL::VERIFY_NONE,
@@ -38,6 +34,12 @@ post '/register' do
     Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
       http.request(request)
     end
+end
+
+post '/register' do
+
+  if params[:first_name] == "Troll" && params[:last_name] == "Face"
+    splunk_message "'Troll Face' registered"
   end
 
   registration = Registration.new
