@@ -23,16 +23,23 @@ get '/register' do
 end
 
 def splunk_message(message)
-    uri = URI.parse("https://splunk:8089/services/messages")
+  uri = URI.parse("#{RTB_SPLUNK_URI}/services/collector/event")
     request = Net::HTTP::Post.new(uri)
-    request.basic_auth("admin", "correcthorsebatterystaple")
-    request.body = "name=userAlert&value=" + message
+    request.basic_auth("x", ENV['RTB_SPLUNK_KEY'])
+    request.body = JSON.dump({
+                               "sourcetype" => "userAlert",
+                               "event" => message
+                             })
     req_options = {
       use_ssl: uri.scheme == "https",
       verify_mode: OpenSSL::SSL::VERIFY_NONE,
     }
-    Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
+    begin
+      Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+        http.request(request)
+      end
+    rescue StandardError=>e
+        puts e
     end
 end
 
