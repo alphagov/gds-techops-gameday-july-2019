@@ -14,3 +14,15 @@ module "controller" {
   root_domain = "game.gds-reliability.engineering"
   subdomain   = "zero"
 }
+
+output "concourse_username" {
+  value = "${module.controller.concourse_username}"
+}
+
+output "concourse_password" {
+  value = "${module.controller.concourse_password}"
+}
+
+output "concourse_url" {
+  value = "${module.controller.concourse_url}"
+}
