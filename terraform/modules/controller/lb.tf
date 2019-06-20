@@ -41,12 +41,19 @@ resource "aws_lb_target_group" "concourse" {
 
 resource "aws_lb_target_group" "splunk" {
   name     = "splunk"
-  port     = 8000
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = "${aws_default_vpc.vpc.id}"
 }
 
-resource "aws_lb_target_group" "splunk_hec" {
+resource "aws_lb_target_group" "splunk_admin" {
+  name     = "splunk-admin"
+  port     = 8089
+  protocol = "HTTPS"
+  vpc_id   = "${aws_default_vpc.vpc.id}"
+}
+
+resource "aws_lb_target_group" "hec" {
   name     = "hec"
   port     = 8088
   protocol = "HTTPS"
@@ -65,5 +72,50 @@ resource "aws_lb_listener_rule" "concourse" {
   condition {
     field  = "host-header"
     values = ["concourse.*"]
+  }
+}
+
+resource "aws_lb_listener_rule" "splunk" {
+  listener_arn = "${aws_lb_listener.ingress_https.arn}"
+  priority     = 101
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.splunk.arn}"
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["splunk.*"]
+  }
+}
+
+resource "aws_lb_listener_rule" "splunk_admin" {
+  listener_arn = "${aws_lb_listener.ingress_https.arn}"
+  priority     = 102
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.splunk_admin.arn}"
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["splunk-admin.*"]
+  }
+}
+
+resource "aws_lb_listener_rule" "hec" {
+  listener_arn = "${aws_lb_listener.ingress_https.arn}"
+  priority     = 103
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.hec.arn}"
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["hec.*"]
   }
 }
