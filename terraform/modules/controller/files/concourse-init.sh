@@ -29,6 +29,7 @@ docker run \
   --restart always \
   -p '8080:8080' \
   -d \
+  --privileged \
   concourse/concourse:5.3 \
   quickstart \
   --postgres-host='${postgres_host}' \
