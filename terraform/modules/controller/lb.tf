@@ -14,7 +14,7 @@ resource "aws_lb" "ingress" {
   ]
 }
 
-resource "aws_lb_listener" "ingress_default" {
+resource "aws_lb_listener" "ingress_https" {
   load_balancer_arn = "${aws_lb.ingress.arn}"
   port              = "443"
   protocol          = "HTTPS"
@@ -32,3 +32,38 @@ resource "aws_lb_listener" "ingress_default" {
   }
 }
 
+resource "aws_lb_target_group" "concourse" {
+  name     = "concourse"
+  port     = 8080
+  protocol = "HTTP"
+  vpc_id   = "${aws_default_vpc.vpc.id}"
+}
+
+resource "aws_lb_target_group" "splunk" {
+  name     = "splunk"
+  port     = 8000
+  protocol = "HTTP"
+  vpc_id   = "${aws_default_vpc.vpc.id}"
+}
+
+resource "aws_lb_target_group" "splunk_hec" {
+  name     = "hec"
+  port     = 8088
+  protocol = "HTTPS"
+  vpc_id   = "${aws_default_vpc.vpc.id}"
+}
+
+resource "aws_lb_listener_rule" "concourse" {
+  listener_arn = "${aws_lb_listener.ingress_https.arn}"
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.concourse.arn}"
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["concourse.*"]
+  }
+}
