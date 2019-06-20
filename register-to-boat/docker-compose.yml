@@ -1,0 +1,47 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+# docker run --log-driver=splunk --log-opt splunk-token=VALUE --log-opt splunk-url=VALUE
+
+services:
+
+  db:
+    image: postgres:alpine
+    restart: always
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  web:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "4567:4567"
+    depends_on:
+      - db
+      - splunk
+    command: ["rackup", "config.ru", "--host", "0.0.0.0", "--port", "4567"]
+    env_file:
+      - web.env
+
+  splunk:
+       image: splunk/splunk:latest
+       hostname: splunk
+       environment:
+        SPLUNK_START_ARGS: --accept-license --answer-yes
+        SPLUNK_ENABLE_LISTEN: 9997
+        SPLUNK_PASSWORD: "correcthorsebatterystaple"
+        SPLUNK_ADD: udp 514
+        SPLUNK_USER: root
+       volumes:
+        - /root/splunk/etc:/opt/splunk/etc
+        - /root/splunk/var:/opt/splunk/var
+       ports:
+        - "8000:8000"
+        - "9997:9997"
+        - "8088:8088"
+        - "8089:8089"
+        - "514:514/udp"
+       restart: always
