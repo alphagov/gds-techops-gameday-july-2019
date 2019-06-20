@@ -22,41 +22,42 @@ get '/register' do
   }
 end
 
-def splunk_message(message)
-  uri = URI.parse("#{RTB_SPLUNK_URI}/services/collector/event")
+def splunk_message(logger, message)
+  uri = URI.parse("#{ENV['SPLUNK_URI']}/services/collector/event")
+  begin
     request = Net::HTTP::Post.new(uri)
-    request.basic_auth("x", ENV['RTB_SPLUNK_KEY'])
-    request.body = JSON.dump({
-                               "sourcetype" => "userAlert",
-                               "event" => message
-                             })
-    req_options = {
-      use_ssl: uri.scheme == "https",
-      verify_mode: OpenSSL::SSL::VERIFY_NONE,
-    }
-    begin
-      Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-        http.request(request)
-      end
-    rescue StandardError=>e
-        puts e
+    request.basic_auth('x', ENV['SPLUNK_KEY'])
+    request.body = { event: message, sourcetype: 'userAlert' }.to_json
+
+    response = Net::HTTP.start(
+      uri.hostname, uri.port,
+      use_ssl: uri.scheme == 'https', verify_mode: OpenSSL::SSL::VERIFY_NONE
+    ) { |http| http.request(request) }
+
+    logger.info response.body
+
+    if response.code.to_s.match?(/^2+/)
+      logger.info 'Success posting to splunk'
+    else
+      logger.error "Failure posting to splunk: #{response.body}"
     end
+  rescue StandardError => e
+    logger.error e
+  end
 end
 
 post '/register' do
-
-  if params[:first_name] == "Troll" && params[:last_name].starts_with?("Face")
-    splunk_message "Troll user registerd with name: " + params[:last_name]
-  end
+  splunk_message(
+    logger,
+    "POST /register: [fname=#{params[:first_name]} ; lname=#{params[:last_name]}]"
+  )
 
   registration = Registration.new
   registration.first_name = params[:first_name]
   registration.last_name = params[:last_name]
 
   unless registration.valid?
-    return erb :register, locals: {
-      registration: registration,
-    }
+    return erb :register, locals: { registration: registration }
   end
 
   registration.save!
@@ -65,13 +66,13 @@ post '/register' do
 end
 
 get '/stats' do
-  locals = {registrations: [
+  locals = { registrations: [
     { name: 'Today',      value: Registration.registrations_today.count },
     { name: 'This week',  value: Registration.registrations_this_week.count },
     { name: 'This month', value: Registration.registrations_this_month.count },
     { name: 'This year',  value: Registration.registrations_this_year.count },
-    { name: 'All time',   value: Registration.count },
-  ]}
+    { name: 'All time',   value: Registration.count }
+  ] }
 
   erb :stats, locals: locals
 end

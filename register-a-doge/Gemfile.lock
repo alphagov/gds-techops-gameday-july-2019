@@ -50,6 +50,7 @@ GEM
       tilt (~> 2.0)
     thread_safe (0.3.6)
     tilt (2.0.9)
+    timecop (0.9.1)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
 
@@ -64,6 +65,7 @@ DEPENDENCIES
   rack-test
   rspec
   sinatra
+  timecop
 
 BUNDLED WITH
    1.17.2
