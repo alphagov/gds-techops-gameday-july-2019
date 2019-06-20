@@ -1,7 +1,7 @@
 require 'rack/test'
 require 'timecop'
 
-require_relative '../register-to-boat'
+require_relative '../register-a-doge'
 
 module RackTest
  include Rack::Test::Methods
