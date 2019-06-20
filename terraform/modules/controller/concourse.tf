@@ -76,6 +76,10 @@ resource "aws_instance" "concourse" {
     "${aws_default_security_group.default.id}",
   ]
 
+  root_block_device {
+    volume_size = 50
+  }
+
   tags = {
     Name = "concourse"
   }

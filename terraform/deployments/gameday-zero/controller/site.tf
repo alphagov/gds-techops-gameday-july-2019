@@ -26,3 +26,15 @@ output "concourse_password" {
 output "concourse_url" {
   value = "${module.controller.concourse_url}"
 }
+
+output "splunk_url" {
+  value = "${module.controller.splunk_url}"
+}
+
+output "hec_url" {
+  value = "${module.controller.hec_url}"
+}
+
+output "splunk_admin_password" {
+  value = "${module.controller.splunk_admin_password}"
+}

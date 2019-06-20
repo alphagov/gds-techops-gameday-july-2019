@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -vueo pipefail
+set -ueo pipefail
 
 yum -y install jq curl git awslogs docker
 
