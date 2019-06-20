@@ -1,0 +1,125 @@
+resources:
+  - name: every-two-minutes
+    type: time
+    source:
+      interval: 2m
+
+jobs:
+  - name: 01-smoke
+    serial: true
+    plan:
+      - get: every-two-minutes
+        trigger: true
+
+      - task: smoke
+        config: &smoke-config
+          params:
+            APP_URL: https://one.game.gds-reliability.engineering
+            IDENTIFIER: gameday-one
+
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: ruby
+              tag: '2.6'
+
+          run:
+            path: ruby
+            args:
+              - -e
+              - |
+                require 'net/http'
+                require 'uri'
+
+                APP_URL    = ENV.fetch('APP_URL')
+                IDENTIFIER = ENV.fetch('IDENTIFIER')
+
+                puts 'Making request'
+                user_resp = Net::HTTP.post_form(
+                  URI("#{APP_URL}/register"),
+                  first_name: 'Smoke-01',
+                  last_name: "#{IDENTIFIER}-#{Time.now.to_i}"
+                )
+                puts 'Finished'
+                abort "Received #{user_resp.code}" unless user_resp.code.to_s.match?(/^2/)
+                uuid = user_resp.body[/(\h{8}-\h{4}-\h{4}-\h{4}-\h{12})/,1]
+                puts "Found receipt #{uuid}"
+
+  - name: 02-smoke
+    serial: true
+    plan:
+      - get: every-two-minutes
+        trigger: true
+
+      - task: smoke
+        config:
+          <<: *smoke-config
+          params:
+            APP_URL: https://two.game.gds-reliability.engineering
+            IDENTIFIER: gameday-two
+
+  - name: 03-smoke
+    serial: true
+    plan:
+      - get: every-two-minutes
+        trigger: true
+
+      - task: smoke
+        config:
+          <<: *smoke-config
+          params:
+            APP_URL: https://three.game.gds-reliability.engineering
+            IDENTIFIER: gameday-three
+
+  - name: 04-smoke
+    serial: true
+    plan:
+      - get: every-two-minutes
+        trigger: true
+
+      - task: smoke
+        config:
+          <<: *smoke-config
+          params:
+            APP_URL: https://four.game.gds-reliability.engineering
+            IDENTIFIER: gameday-four
+
+  - name: 05-smoke
+    serial: true
+    plan:
+      - get: every-two-minutes
+        trigger: true
+
+      - task: smoke
+        config:
+          <<: *smoke-config
+          params:
+            APP_URL: https://five.game.gds-reliability.engineering
+            IDENTIFIER: gameday-five
+
+  - name: 06-smoke
+    serial: true
+    plan:
+      - get: every-two-minutes
+        trigger: true
+
+      - task: smoke
+        config:
+          <<: *smoke-config
+          params:
+            APP_URL: https://six.game.gds-reliability.engineering
+            IDENTIFIER: gameday-six
+
+  - name: 07-smoke
+    serial: true
+    plan:
+      - get: every-two-minutes
+        trigger: true
+
+      - task: smoke
+        config:
+          <<: *smoke-config
+          params:
+            APP_URL: https://seven.game.gds-reliability.engineering
+            IDENTIFIER: gameday-seven
