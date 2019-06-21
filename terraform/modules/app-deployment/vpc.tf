@@ -34,6 +34,7 @@ resource "aws_subnet" "z1" {
   vpc_id                  = "${aws_vpc.main.id}"
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "eu-west-2a"
+  map_public_ip_on_launch = true
 }
 
 resource "aws_route_table_association" "z1" {
@@ -49,6 +50,7 @@ resource "aws_subnet" "z2" {
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "10.0.2.0/24"
   availability_zone = "eu-west-2b"
+  map_public_ip_on_launch = true
 }
 
 resource "aws_route_table_association" "z2" {
