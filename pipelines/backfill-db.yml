@@ -32,3 +32,81 @@ jobs:
             path: ruby
             dir: gds-techops-gameday-git
             args: ['scripts/backfill-db.rb']
+
+  - name: 02-backfill
+    serial: true
+    plan:
+      - get: gds-techops-gameday-git
+      - task: backfill
+        config:
+          <<: *backfill-config
+          params:
+            DB_HOST: ((aws_gameday_two_db_host))
+            DB_PASS: ((database_password))
+            DB_NAME: app
+            DB_USER: app
+
+  - name: 03-backfill
+    serial: true
+    plan:
+      - get: gds-techops-gameday-git
+      - task: backfill
+        config:
+          <<: *backfill-config
+          params:
+            DB_HOST: ((aws_gameday_three_db_host))
+            DB_PASS: ((database_password))
+            DB_NAME: app
+            DB_USER: app
+
+  - name: 04-backfill
+    serial: true
+    plan:
+      - get: gds-techops-gameday-git
+      - task: backfill
+        config:
+          <<: *backfill-config
+          params:
+            DB_HOST: ((aws_gameday_four_db_host))
+            DB_PASS: ((database_password))
+            DB_NAME: app
+            DB_USER: app
+
+  - name: 05-backfill
+    serial: true
+    plan:
+      - get: gds-techops-gameday-git
+      - task: backfill
+        config:
+          <<: *backfill-config
+          params:
+            DB_HOST: ((aws_gameday_five_db_host))
+            DB_PASS: ((database_password))
+            DB_NAME: app
+            DB_USER: app
+
+  - name: 06-backfill
+    serial: true
+    plan:
+      - get: gds-techops-gameday-git
+      - task: backfill
+        config:
+          <<: *backfill-config
+          params:
+            DB_HOST: ((aws_gameday_six_db_host))
+            DB_PASS: ((database_password))
+            DB_NAME: app
+            DB_USER: app
+
+  - name: 07-backfill
+    serial: true
+    plan:
+      - get: gds-techops-gameday-git
+      - task: backfill
+        config:
+          <<: *backfill-config
+          params:
+            DB_HOST: ((aws_gameday_seven_db_host))
+            DB_PASS: ((database_password))
+            DB_NAME: app
+            DB_USER: app
