@@ -87,9 +87,9 @@ outer:
 
 	if badResponses == 0 {
 		fmt.Println("Success")
-		os.Exit(1)
+		os.Exit(0)
 	} else {
 		fmt.Println("Failure")
-		os.Exit(0)
+		os.Exit(1)
 	}
 }
