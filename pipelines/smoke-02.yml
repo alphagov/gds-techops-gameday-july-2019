@@ -6,8 +6,8 @@ jobs:
         config: &smoke-config
           params:
             TARGET: https://one.game.gds-reliability.engineering/register
-            RPS: 50
-            DURATION: 2m
+            RPS: 150
+            DURATION: 5m
 
           platform: linux
           image_resource:
@@ -26,8 +26,8 @@ jobs:
           <<: *smoke-config
           params:
             TARGET: https://two.game.gds-reliability.engineering/register
-            RPS: 50
-            DURATION: 2m
+            RPS: 150
+            DURATION: 5m
 
   - name: 03-smoke
     serial: true
@@ -37,8 +37,8 @@ jobs:
           <<: *smoke-config
           params:
             TARGET: https://three.game.gds-reliability.engineering/register
-            RPS: 50
-            DURATION: 2m
+            RPS: 150
+            DURATION: 5m
 
   - name: 04-smoke
     serial: true
@@ -48,8 +48,8 @@ jobs:
           <<: *smoke-config
           params:
             TARGET: https://four.game.gds-reliability.engineering/register
-            RPS: 50
-            DURATION: 2m
+            RPS: 150
+            DURATION: 5m
 
   - name: 05-smoke
     serial: true
@@ -59,8 +59,8 @@ jobs:
           <<: *smoke-config
           params:
             TARGET: https://five.game.gds-reliability.engineering/register
-            RPS: 50
-            DURATION: 2m
+            RPS: 150
+            DURATION: 5m
 
   - name: 06-smoke
     serial: true
@@ -70,8 +70,8 @@ jobs:
           <<: *smoke-config
           params:
             TARGET: https://six.game.gds-reliability.engineering/register
-            RPS: 50
-            DURATION: 2m
+            RPS: 150
+            DURATION: 5m
 
   - name: 07-smoke
     serial: true
@@ -81,5 +81,5 @@ jobs:
           <<: *smoke-config
           params:
             TARGET: https://seven.game.gds-reliability.engineering/register
-            RPS: 50
-            DURATION: 2m
+            RPS: 150
+            DURATION: 5m
