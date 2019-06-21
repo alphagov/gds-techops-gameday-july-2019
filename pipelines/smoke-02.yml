@@ -1,6 +1,7 @@
 jobs:
   - name: 01-smoke
     serial: true
+    public: true
     plan:
       - task: smoke
         config: &smoke-config
@@ -20,6 +21,7 @@ jobs:
 
   - name: 02-smoke
     serial: true
+    public: true
     plan:
       - task: smoke
         config:
@@ -31,6 +33,7 @@ jobs:
 
   - name: 03-smoke
     serial: true
+    public: true
     plan:
       - task: smoke
         config:
@@ -42,6 +45,7 @@ jobs:
 
   - name: 04-smoke
     serial: true
+    public: true
     plan:
       - task: smoke
         config:
@@ -53,6 +57,7 @@ jobs:
 
   - name: 05-smoke
     serial: true
+    public: true
     plan:
       - task: smoke
         config:
@@ -64,6 +69,7 @@ jobs:
 
   - name: 06-smoke
     serial: true
+    public: true
     plan:
       - task: smoke
         config:
@@ -75,6 +81,7 @@ jobs:
 
   - name: 07-smoke
     serial: true
+    public: true
     plan:
       - task: smoke
         config:
