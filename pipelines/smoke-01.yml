@@ -4,12 +4,21 @@ resources:
     source:
       interval: 2m
 
+  - name: gds-techops-gameday-git
+    type: git
+    source:
+      uri: git@github.com:tlwr/gds-techops-gameday.git
+      branch: wip-tlwr
+      private_key: ((read_only_ssh_private_key))
+
 jobs:
   - name: 01-smoke
     serial: true
     plan:
       - get: every-two-minutes
         trigger: true
+
+      - get: gds-techops-gameday-git
 
       - task: smoke
         config: &smoke-config
@@ -26,31 +35,16 @@ jobs:
 
           run:
             path: ruby
-            args:
-              - -e
-              - |
-                require 'net/http'
-                require 'uri'
-
-                APP_URL    = ENV.fetch('APP_URL')
-                IDENTIFIER = ENV.fetch('IDENTIFIER')
-
-                puts 'Making request'
-                user_resp = Net::HTTP.post_form(
-                  URI("#{APP_URL}/register"),
-                  first_name: 'Smoke-01',
-                  last_name: "#{IDENTIFIER}-#{Time.now.to_i}"
-                )
-                puts 'Finished'
-                abort "Received #{user_resp.code}" unless user_resp.code.to_s.match?(/^2/)
-                uuid = user_resp.body[/(\h{8}-\h{4}-\h{4}-\h{4}-\h{12})/,1]
-                puts "Found receipt #{uuid}"
+            dir: gds-techops-gameday-git
+            args: ['scripts/smoke-01.rb']
 
   - name: 02-smoke
     serial: true
     plan:
       - get: every-two-minutes
         trigger: true
+
+      - get: gds-techops-gameday-git
 
       - task: smoke
         config:
@@ -65,6 +59,8 @@ jobs:
       - get: every-two-minutes
         trigger: true
 
+      - get: gds-techops-gameday-git
+
       - task: smoke
         config:
           <<: *smoke-config
@@ -77,6 +73,8 @@ jobs:
     plan:
       - get: every-two-minutes
         trigger: true
+
+      - get: gds-techops-gameday-git
 
       - task: smoke
         config:
@@ -91,6 +89,8 @@ jobs:
       - get: every-two-minutes
         trigger: true
 
+      - get: gds-techops-gameday-git
+
       - task: smoke
         config:
           <<: *smoke-config
@@ -104,6 +104,8 @@ jobs:
       - get: every-two-minutes
         trigger: true
 
+      - get: gds-techops-gameday-git
+
       - task: smoke
         config:
           <<: *smoke-config
@@ -116,6 +118,8 @@ jobs:
     plan:
       - get: every-two-minutes
         trigger: true
+
+      - get: gds-techops-gameday-git
 
       - task: smoke
         config:
