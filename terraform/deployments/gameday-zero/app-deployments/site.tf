@@ -6,10 +6,6 @@ terraform {
   }
 }
 
-variable "simulate_az_failure" {
-	default = "no"
-}
-
 provider "aws" {}
 
 locals {
@@ -21,8 +17,6 @@ module "app_deployment_one" {
 
   provider_role_arn   = "arn:aws:iam::532889539897:role/bootstrap"
   provider_role_alias = "one"
-
-	simulate_az_failure = "${var.simulate_az_failure}"
 
   root_domain = "game.gds-reliability.engineering"
   subdomain   = "one"
