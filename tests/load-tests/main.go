@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/url"
+	"os"
 	"time"
 
 	"github.com/alecthomas/kingpin"
@@ -61,10 +62,15 @@ outer:
 	for {
 		select {
 		case result := <-results:
-			counter += 0
+			counter += 1
+
 			if counter%10 == 0 {
 				fmt.Print(".")
 			}
+			if counter%800 == 0 {
+				fmt.Print("\n")
+			}
+
 			if result == nil {
 				break outer
 			} else {
@@ -86,9 +92,18 @@ outer:
 		}
 	}
 
+	reliability := 100 * float64(goodResponses) / float64(goodResponses+badResponses)
+
 	fmt.Printf(
 		"%d / %d (%5f%%) responses were successful\n",
-		goodResponses, goodResponses+badResponses,
-		100*float64(goodResponses)/float64(goodResponses+badResponses),
+		goodResponses, goodResponses+badResponses, reliability,
 	)
+
+	if reliability >= 99.99 {
+		fmt.Println("Success")
+		os.Exit(0)
+	} else {
+		fmt.Println("Failure")
+		os.Exit(1)
+	}
 }
