@@ -1,6 +1,5 @@
 variable "provider_role_arn" {}
 variable "provider_role_alias" {}
-variable "simulate_az_failure" {}
 variable "root_domain" {}
 variable "subdomain" {}
 variable "db_password" {}

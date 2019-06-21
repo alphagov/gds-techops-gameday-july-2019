@@ -31,15 +31,13 @@ resource "aws_route_table" "main" {
 resource "aws_subnet" "z1" {
   provider = "aws.${var.provider_role_alias}"
 
-  vpc_id            = "${aws_vpc.main.id}"
-  cidr_block        = "10.0.1.0/24"
-  availability_zone = "eu-west-2a"
+  vpc_id                  = "${aws_vpc.main.id}"
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "eu-west-2a"
 }
 
 resource "aws_route_table_association" "z1" {
   provider = "aws.${var.provider_role_alias}"
-
-  count = "${var.simulate_az_failure == "yes" ? 0 : 1}"
 
   subnet_id      = "${aws_subnet.z1.id}"
   route_table_id = "${aws_route_table.main.id}"
@@ -55,8 +53,6 @@ resource "aws_subnet" "z2" {
 
 resource "aws_route_table_association" "z2" {
   provider = "aws.${var.provider_role_alias}"
-
-  count = 1
 
   subnet_id      = "${aws_subnet.z2.id}"
   route_table_id = "${aws_route_table.main.id}"
