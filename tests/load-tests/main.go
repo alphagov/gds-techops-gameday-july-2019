@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/url"
-	"os"
 	"time"
 
 	"github.com/alecthomas/kingpin"
@@ -54,19 +53,27 @@ func main() {
 		(**target).String(),
 	)
 
+	fmt.Println("One '.' == 10 requests made...starting")
+
+	counter := 0
 	resultCounters := make(map[int]int, 0)
 outer:
 	for {
 		select {
 		case result := <-results:
+			counter += 0
+			if counter%10 == 0 {
+				fmt.Print(".")
+			}
 			if result == nil {
-				fmt.Println("We are done")
 				break outer
 			} else {
 				resultCounters[int(result.Code)]++
 			}
 		}
 	}
+
+	fmt.Println("\nWe are done")
 
 	goodResponses := 0
 	badResponses := 0
@@ -84,12 +91,4 @@ outer:
 		goodResponses, goodResponses+badResponses,
 		100*float64(goodResponses)/float64(goodResponses+badResponses),
 	)
-
-	if badResponses == 0 {
-		fmt.Println("Success")
-		os.Exit(0)
-	} else {
-		fmt.Println("Failure")
-		os.Exit(1)
-	}
 }
