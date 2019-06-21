@@ -21,6 +21,7 @@ jobs:
       - get: gds-techops-gameday-git
 
       - task: smoke
+        timeout: 30s
         config: &smoke-config
           params:
             APP_URL: https://one.game.gds-reliability.engineering
@@ -32,6 +33,9 @@ jobs:
             source:
               repository: ruby
               tag: '2.6'
+
+          inputs:
+            - name: gds-techops-gameday-git
 
           run:
             path: ruby
@@ -47,6 +51,7 @@ jobs:
       - get: gds-techops-gameday-git
 
       - task: smoke
+        timeout: 30s
         config:
           <<: *smoke-config
           params:
@@ -62,6 +67,7 @@ jobs:
       - get: gds-techops-gameday-git
 
       - task: smoke
+        timeout: 30s
         config:
           <<: *smoke-config
           params:
@@ -77,6 +83,7 @@ jobs:
       - get: gds-techops-gameday-git
 
       - task: smoke
+        timeout: 30s
         config:
           <<: *smoke-config
           params:
@@ -92,6 +99,7 @@ jobs:
       - get: gds-techops-gameday-git
 
       - task: smoke
+        timeout: 30s
         config:
           <<: *smoke-config
           params:
@@ -107,6 +115,7 @@ jobs:
       - get: gds-techops-gameday-git
 
       - task: smoke
+        timeout: 30s
         config:
           <<: *smoke-config
           params:
@@ -122,6 +131,7 @@ jobs:
       - get: gds-techops-gameday-git
 
       - task: smoke
+        timeout: 30s
         config:
           <<: *smoke-config
           params:
