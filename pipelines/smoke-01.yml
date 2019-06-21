@@ -14,6 +14,7 @@ resources:
 jobs:
   - name: 01-smoke
     serial: true
+    public: true
     plan:
       - get: every-two-minutes
         trigger: true
@@ -44,6 +45,7 @@ jobs:
 
   - name: 02-smoke
     serial: true
+    public: true
     plan:
       - get: every-two-minutes
         trigger: true
@@ -60,6 +62,7 @@ jobs:
 
   - name: 03-smoke
     serial: true
+    public: true
     plan:
       - get: every-two-minutes
         trigger: true
@@ -76,6 +79,7 @@ jobs:
 
   - name: 04-smoke
     serial: true
+    public: true
     plan:
       - get: every-two-minutes
         trigger: true
@@ -92,6 +96,7 @@ jobs:
 
   - name: 05-smoke
     serial: true
+    public: true
     plan:
       - get: every-two-minutes
         trigger: true
@@ -108,6 +113,7 @@ jobs:
 
   - name: 06-smoke
     serial: true
+    public: true
     plan:
       - get: every-two-minutes
         trigger: true
@@ -124,6 +130,7 @@ jobs:
 
   - name: 07-smoke
     serial: true
+    public: true
     plan:
       - get: every-two-minutes
         trigger: true
