@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-
 require 'json'
 require 'net/http'
 require 'openssl'
@@ -13,15 +12,15 @@ HEC_URL         = ENV.fetch('HEC_URL', SPLUNK_URL.sub('splunk-admin', 'hec'))
 IDENTIFIER      = ENV.fetch('IDENTIFIER')
 
 def success(*args)
-  puts ['✅', *args].join(' ')
+  puts ['Success', *args].join(' ')
 end
 
 def failure(*args)
-  abort ['❌', *args].join(' ')
+  abort ['Failure', *args].join(' ')
 end
 
 def info(*args)
-  puts ['🆗', *args].join(' ')
+  puts ['Info', *args].join(' ')
 end
 
 def splunk_http(method, path, params)
