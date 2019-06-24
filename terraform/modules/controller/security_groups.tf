@@ -7,36 +7,36 @@ resource "aws_security_group" "ingress" {
 }
 
 resource "aws_security_group_rule" "ingress_ingress_from_internet" {
-  type            = "ingress"
+  type = "ingress"
 
-  from_port       = 443
-  to_port         = 443
-  protocol        = "tcp"
+  from_port = 443
+  to_port   = 443
+  protocol  = "tcp"
 
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.ingress.id}"
 }
 
 resource "aws_security_group_rule" "ingress_egress_to_concourse" {
-  type            = "egress"
+  type = "egress"
 
-  from_port       = 0
-  to_port         = 65535
-  protocol        = "tcp"
+  from_port = 0
+  to_port   = 65535
+  protocol  = "tcp"
 
   source_security_group_id = "${aws_security_group.concourse.id}"
-  security_group_id = "${aws_security_group.ingress.id}"
+  security_group_id        = "${aws_security_group.ingress.id}"
 }
 
 resource "aws_security_group_rule" "ingress_egress_to_splunk" {
-  type            = "egress"
+  type = "egress"
 
-  from_port       = 0
-  to_port         = 65535
-  protocol        = "tcp"
+  from_port = 0
+  to_port   = 65535
+  protocol  = "tcp"
 
   source_security_group_id = "${aws_security_group.splunk.id}"
-  security_group_id = "${aws_security_group.ingress.id}"
+  security_group_id        = "${aws_security_group.ingress.id}"
 }
 
 # Concourse
@@ -48,22 +48,22 @@ resource "aws_security_group" "concourse" {
 }
 
 resource "aws_security_group_rule" "concourse_ingress_from_ingress" {
-  type            = "ingress"
+  type = "ingress"
 
-  from_port       = 0
-  to_port         = 65535
-  protocol        = "tcp"
+  from_port = 0
+  to_port   = 65535
+  protocol  = "tcp"
 
   source_security_group_id = "${aws_security_group.ingress.id}"
-  security_group_id = "${aws_security_group.concourse.id}"
+  security_group_id        = "${aws_security_group.concourse.id}"
 }
 
 resource "aws_security_group_rule" "concourse_egress_to_internet" {
-  type            = "egress"
+  type = "egress"
 
-  from_port       = 0
-  to_port         = 65535
-  protocol        = "tcp"
+  from_port = 0
+  to_port   = 65535
+  protocol  = "tcp"
 
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.concourse.id}"
@@ -78,22 +78,22 @@ resource "aws_security_group" "splunk" {
 }
 
 resource "aws_security_group_rule" "splunk_ingress_from_ingress" {
-  type            = "ingress"
+  type = "ingress"
 
-  from_port       = 0
-  to_port         = 65535
-  protocol        = "tcp"
+  from_port = 0
+  to_port   = 65535
+  protocol  = "tcp"
 
   source_security_group_id = "${aws_security_group.ingress.id}"
-  security_group_id = "${aws_security_group.splunk.id}"
+  security_group_id        = "${aws_security_group.splunk.id}"
 }
 
 resource "aws_security_group_rule" "splunk_egress_to_internet" {
-  type            = "egress"
+  type = "egress"
 
-  from_port       = 0
-  to_port         = 65535
-  protocol        = "tcp"
+  from_port = 0
+  to_port   = 65535
+  protocol  = "tcp"
 
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.splunk.id}"

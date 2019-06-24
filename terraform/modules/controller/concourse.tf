@@ -54,13 +54,13 @@ resource "aws_db_instance" "concourse" {
 }
 
 data "template_file" "concourse_init" {
-  template            = "${file("${path.module}/files/concourse-init.sh")}"
+  template = "${file("${path.module}/files/concourse-init.sh")}"
 
   vars {
     postgres_host       = "${aws_db_instance.concourse.address}"
     postgres_password   = "${random_string.concourse_postgres_password.result}"
     local_user_password = "${random_string.concourse_local_user_password.result}"
-    external_url = "https://concourse.${local.fqdn}"
+    external_url        = "https://concourse.${local.fqdn}"
   }
 }
 

@@ -47,9 +47,9 @@ resource "aws_route_table_association" "z1" {
 resource "aws_subnet" "z2" {
   provider = "aws.${var.provider_role_alias}"
 
-  vpc_id            = "${aws_vpc.main.id}"
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "eu-west-2b"
+  vpc_id                  = "${aws_vpc.main.id}"
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "eu-west-2b"
   map_public_ip_on_launch = true
 }
 
