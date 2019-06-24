@@ -9,7 +9,7 @@ terraform {
 provider "aws" {}
 
 locals {
-	db_password = "when-you-invent-the-ship-you-invent-the-shipwreck-2019"
+  db_password = "when-you-invent-the-ship-you-invent-the-shipwreck-2019"
 }
 
 module "app_deployment_one" {
@@ -20,9 +20,10 @@ module "app_deployment_one" {
 
   root_domain = "game.gds-reliability.engineering"
   subdomain   = "one"
-	db_password = "${local.db_password}"
+  db_password = "${local.db_password}"
 
-	participants = []
+	participants    = []
+  participants_vo = []
 }
 
 output "database_password" {

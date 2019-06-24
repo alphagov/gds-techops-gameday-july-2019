@@ -84,7 +84,7 @@ resource "aws_security_group_rule" "db_ingress_from_internet" {
   protocol  = "tcp"
 
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id        = "${aws_security_group.db.id}"
+  security_group_id = "${aws_security_group.db.id}"
 }
 
 resource "aws_security_group_rule" "db_egress_to_internet" {
