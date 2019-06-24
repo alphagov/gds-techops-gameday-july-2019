@@ -1,0 +1,200 @@
+groups:
+  - name: monitoring
+    jobs:
+      - smoke-test
+      - load-test
+      - base-traffic
+
+  - name: admin
+    jobs:
+      - splunk
+      - backfill-db
+
+resources:
+  - name: every-one-minute
+    type: time
+    source:
+      interval: 2m
+
+  - name: gds-techops-gameday-git
+    type: git
+    source:
+      uri: git@github.com:tlwr/gds-techops-gameday.git
+      branch: wip-tlwr
+      private_key: ((read_only_ssh_private_key))
+
+jobs:
+  - name: smoke-test
+    serial: true
+    public: true
+    plan:
+      - get: every-one-minute
+        trigger: true
+
+      - get: gds-techops-gameday-git
+
+      - task: smoke
+        timeout: 30s
+        config:
+          params:
+            APP_URL: https://((team)).game.gds-reliability.engineering
+            IDENTIFIER: gameday-((team))
+
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: ruby
+              tag: '2.6'
+
+          inputs:
+            - name: gds-techops-gameday-git
+
+          run:
+            path: ruby
+            dir: gds-techops-gameday-git
+            args: ['scripts/smoke.rb']
+
+  - name: base-traffic
+    serial: true
+    public: true
+    plan:
+      - task: 2-users-per-second
+        config: &load-test-config
+          params:
+            TARGET: https://((team)).game.gds-reliability.engineering/register
+            RPS: 2
+            DURATION: 15m
+
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: tlwr/gds-techops-gameday-lt
+
+          run:
+            path: /test/lt
+
+  - name: load-test
+    serial: true
+    public: true
+    plan:
+      - try:
+          task: 25-users-per-second
+          config:
+            <<: *load-test-config
+            params:
+              TARGET: https://((team)).game.gds-reliability.engineering/register
+              RPS: 25
+              DURATION: 2m
+
+      - try:
+          task: 50-users-per-second
+          config:
+            <<: *load-test-config
+            params:
+              TARGET: https://((team)).game.gds-reliability.engineering/register
+              RPS: 50
+              DURATION: 2m
+
+      - try:
+          task: 100-users-per-second
+          config:
+            <<: *load-test-config
+            params:
+              TARGET: https://((team)).game.gds-reliability.engineering/register
+              RPS: 100
+              DURATION: 2m
+
+      - try:
+          task: 250-users-per-second
+          config:
+            <<: *load-test-config
+            params:
+              TARGET: https://((team)).game.gds-reliability.engineering/register
+              RPS: 250
+              DURATION: 1m
+
+      - try:
+          task: 100-users-per-second
+          config:
+            <<: *load-test-config
+            params:
+              TARGET: https://((team)).game.gds-reliability.engineering/register
+              RPS: 100
+              DURATION: 1m
+
+      - try:
+          task: 50-users-per-second
+          config:
+            <<: *load-test-config
+            params:
+              TARGET: https://((team)).game.gds-reliability.engineering/register
+              RPS: 50
+              DURATION: 1m
+
+      - try:
+          task: 25-users-per-second
+          config:
+            <<: *load-test-config
+            params:
+              TARGET: https://((team)).game.gds-reliability.engineering/register
+              RPS: 25
+              DURATION: 1m
+
+
+  - name: backfill-db
+    serial: true
+    public: true
+    plan:
+      - get: gds-techops-gameday-git
+
+      - task: backfill
+        config:
+          params:
+            DB_HOST: ((db_host))
+            DB_PASS: ((database_password))
+            DB_NAME: app
+            DB_USER: app
+
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: tlwr/ruby-pg
+
+          inputs:
+            - name: gds-techops-gameday-git
+
+          run:
+            path: ruby
+            dir: gds-techops-gameday-git
+            args: ['scripts/backfill-db.rb']
+
+  - name: splunk
+    serial: true
+    public: true
+    plan:
+      - get: gds-techops-gameday-git
+
+      - task: bootstrap-splunk
+        config:
+          params:
+            SPLUNK_URL: https://splunk-admin.zero.game.gds-reliability.engineering
+            SPLUNK_PASS: ((splunk_pass))
+            IDENTIFIER: gameday-((team))
+
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: ruby
+              tag: '2.6'
+
+          inputs:
+            - name: gds-techops-gameday-git
+
+          run:
+            path: ruby
+            dir: gds-techops-gameday-git
+            args: ['scripts/bootstrap-splunk.rb']

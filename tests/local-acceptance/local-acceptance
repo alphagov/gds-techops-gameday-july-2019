@@ -1,0 +1,90 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'net/http'
+require 'openssl'
+require 'securerandom'
+require 'uri'
+
+APP_URL         = ENV.fetch('APP_URL', 'http://localhost:4567')
+SPLUNK_USER     = ENV.fetch('SPLUNK_USER', 'admin')
+SPLUNK_PASS     = ENV.fetch('SPLUNK_PASS', 'correcthorsebatterystaple')
+SPLUNK_URL      = ENV.fetch('SPLUNK_URL',  'https://localhost:8089')
+
+def success(*args)
+  puts ['✅', *args].join(' ')
+end
+
+def failure(*args)
+  abort ['❌', *args].join(' ')
+end
+
+def info(*args)
+  puts ['🆗', *args].join(' ')
+end
+
+def splunk_http(method, path, params)
+  uri = URI("#{SPLUNK_URL}/#{path}?output_mode=json")
+
+  if method == 'get'
+    uri.query = URI.encode_www_form(params.update(output_mode: 'json'))
+  end
+
+  request = Net::HTTP.const_get(method.capitalize).new(uri)
+  request.basic_auth(SPLUNK_USER, SPLUNK_PASS)
+  request.body = params.to_json unless method == 'get'
+
+  http             = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl     = uri.scheme == 'https'
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE if uri.host.match?(/localhost/)
+
+  http.start { |http| http.request(request) }
+end
+
+identifier = SecureRandom.uuid.to_s
+
+info 'Registering user'
+user_resp = Net::HTTP.post_form(
+  URI("#{APP_URL}/register"),
+  { first_name: 'Smoke', last_name: identifier }
+)
+failure 'error registering user' unless user_resp.code.to_s.match?(/^2/)
+success 'Registered user'
+
+info 'Starting search'
+
+query  = %(search '"*#{identifier}*"')
+search = splunk_http('post', 'services/search/jobs', search: query)
+failure "Error starting search: #{search.body}" unless search.code.match?(/^2/)
+success 'Starting search'
+
+search_id = JSON.parse(search.body).fetch('entry').first.dig('content', 'sid')
+
+info 'Waiting for the search to complete...'
+5.times do |i|
+  sleep 1
+  info "Querying search attempt #{i + 1}"
+
+  search = splunk_http('get', "services/search/jobs/#{search_id}", {})
+  failure "Error querying search: #{search.body}" unless search.code.match?(/^2/)
+  search = JSON.parse(search.body)
+  if search['entry'].first.dig('content', 'dispatchState') == 'DONE'
+    info 'Search is finished'
+    break
+  end
+  failure 'Search was not complete after 5 attempts' if i == 4
+end
+
+info 'Querying search'
+search = splunk_http('get', "services/search/jobs/#{search_id}/results", {})
+failure "Error starting search: #{search.body}" unless search.code.match?(/^2/)
+success 'Queried search'
+search = JSON.parse(search.body)
+results = search.dig('results')
+
+info "Found #{results.length} results"
+if results.empty?
+  failure "No user log entry in splunk where identifier=#{identifier}"
+else
+  success "User log entry in splunk where identifier=#{identifier}"
+end

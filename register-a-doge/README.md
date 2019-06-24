@@ -1,4 +1,4 @@
-# TECH.OPS / Register to Boat
+# TECH.OPS / Register a Doge
 
 ## Usage
 

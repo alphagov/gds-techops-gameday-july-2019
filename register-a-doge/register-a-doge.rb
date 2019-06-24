@@ -22,41 +22,13 @@ get '/register' do
   }
 end
 
-def splunk_message(message)
-  uri = URI.parse("#{RTB_SPLUNK_URI}/services/collector/event")
-    request = Net::HTTP::Post.new(uri)
-    request.basic_auth("x", ENV['RTB_SPLUNK_KEY'])
-    request.body = JSON.dump({
-                               "sourcetype" => "userAlert",
-                               "event" => message
-                             })
-    req_options = {
-      use_ssl: uri.scheme == "https",
-      verify_mode: OpenSSL::SSL::VERIFY_NONE,
-    }
-    begin
-      Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-        http.request(request)
-      end
-    rescue StandardError=>e
-        puts e
-    end
-end
-
 post '/register' do
-
-  if params[:first_name] == "Troll" && params[:last_name].starts_with?("Face")
-    splunk_message "Troll user registerd with name: " + params[:last_name]
-  end
-
   registration = Registration.new
   registration.first_name = params[:first_name]
   registration.last_name = params[:last_name]
 
   unless registration.valid?
-    return erb :register, locals: {
-      registration: registration,
-    }
+    return erb :register, locals: { registration: registration }
   end
 
   registration.save!
@@ -65,13 +37,13 @@ post '/register' do
 end
 
 get '/stats' do
-  locals = {registrations: [
+  locals = { registrations: [
     { name: 'Today',      value: Registration.registrations_today.count },
     { name: 'This week',  value: Registration.registrations_this_week.count },
     { name: 'This month', value: Registration.registrations_this_month.count },
     { name: 'This year',  value: Registration.registrations_this_year.count },
-    { name: 'All time',   value: Registration.count },
-  ]}
+    { name: 'All time',   value: Registration.count }
+  ] }
 
   erb :stats, locals: locals
 end
