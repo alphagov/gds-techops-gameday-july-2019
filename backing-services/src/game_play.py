@@ -10,23 +10,26 @@ from flask_httpauth import HTTPDigestAuth
 from os.path import abspath, normpath, join, isfile
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "secret key here"
-auth = HTTPDigestAuth()
+
+auth_enabled = False
+# -----
+# Don't need auth for now, may use it with Lambda/SSO integration once the main
+# documentation piece is done.
+# app.config["SECRET_KEY"] = "secret key here"
+# auth = HTTPDigestAuth()
+# users = {
+    # instead of accounts, G-Suite SSO...
+#    "john": "hello",
+#    "susan": "bye",
+# }
+# @auth.get_password
+# def get_pw(username):
+#     if username in users:
+#         return users.get(username)
+#     return None
+# -----
 
 DEFAULT_OK_RESPONSE = "OK"
-
-users = {
-    # instead of accounts, some dynamically generated thing...
-    "john": "hello",
-    "susan": "bye",
-}
-
-
-@auth.get_password
-def get_pw(username):
-    if username in users:
-        return users.get(username)
-    return None
 
 
 @app.route("/")
@@ -37,8 +40,10 @@ def home():
         print("This is a Health Check Request")
         return "GTG"
 
-    if "session" in request.cookies:
-        return redirect("/dashboard")
+    if not auth_enabled or "session" in request.cookies:
+        # this should go to a dashboard (with stats, questions etc.)
+        # for now, it'll go to the generic documentation
+        return redirect("/docs")
     else:
         return (render_template("home.html", title="Home", gfe_ver="2.9.0"), 200)
 
@@ -56,8 +61,10 @@ def logout():
 
 
 @app.route("/dashboard", methods=["GET"])
-@auth.login_required
+# @auth.login_required
 def dashboard():
+    # overriding this to go to docs for now...
+    return redirect("/docs")
     return (
         render_template(
             "dashboard.html", title="Dashboard", gfe_ver="2.9.0", loggedin=True  # noqa
@@ -68,7 +75,7 @@ def dashboard():
 
 @app.route("/docs")
 @app.route("/docs/<path:path>")
-@auth.login_required
+# @auth.login_required
 def send_docs(path=False):
     if not path:
         path = "default"
@@ -83,7 +90,8 @@ def send_docs(path=False):
                 "docs.html",
                 title="Documentation",
                 gfe_ver="2.9.0",
-                loggedin=True,
+                # loggedin should be True if there was auth...
+                loggedin=False,
                 content=md,
             ),
             200,
