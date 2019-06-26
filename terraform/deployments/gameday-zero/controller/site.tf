@@ -6,7 +6,10 @@ terraform {
   }
 }
 
-provider "aws" {}
+provider "aws" {
+  region = "eu-west-2"
+}
+
 
 module "controller" {
   source = "../../../modules/controller"

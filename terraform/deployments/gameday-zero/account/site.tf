@@ -7,7 +7,9 @@ terraform {
   }
 }
 
-provider "aws" {}
+provider "aws" {
+  region= "eu-west-2"
+}
 
 module "state_bucket" {
   source = "../../../modules/state-bucket"
