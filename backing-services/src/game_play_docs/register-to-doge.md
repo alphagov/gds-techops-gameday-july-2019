@@ -1,5 +1,9 @@
 [back...](/docs)  
 
+### Check back here at 10am on the 1st July to get more information!
+
+----
+
 ## Register to Doge
 
 Your team consists of people from different job roles and skill sets. We recommend that you start the day by discussing each others strengths and considering where you each can best help. Alongside the technical aspects of the incident you should also consider what important roles your non-technical team members can fill, for example:
@@ -7,11 +11,6 @@ Your team consists of people from different job roles and skill sets. We recomme
 - Comms
 - User impact
 - Incident management
-
-----
-### Check back here at 10am on the 1st July to get more information!
-----
-
 
 ### Teams!
 

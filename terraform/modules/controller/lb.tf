@@ -60,6 +60,17 @@ resource "aws_lb_target_group" "hec" {
   vpc_id   = "${aws_default_vpc.vpc.id}"
 }
 
+resource "aws_lb_target_group" "documentation" {
+  name        = "documentation"
+  target_type = "lambda"
+
+  health_check {
+    path     = "/"
+    matcher  = "200"
+    interval = "60"
+  }
+}
+
 resource "aws_lb_listener_rule" "concourse" {
   listener_arn = "${aws_lb_listener.ingress_https.arn}"
   priority     = 100
@@ -117,5 +128,20 @@ resource "aws_lb_listener_rule" "hec" {
   condition {
     field  = "host-header"
     values = ["hec.*"]
+  }
+}
+
+resource "aws_lb_listener_rule" "documentation" {
+  listener_arn = "${aws_lb_listener.ingress_https.arn}"
+  priority     = 104
+
+  action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.documentation.arn}"
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["docs.*"]
   }
 }
