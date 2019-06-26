@@ -66,7 +66,7 @@ class Registration < ActiveRecord::Base
   end
 
   def registration_code
-    difficulty = ENV.fetch('APP_DIFFICULTY', 5)
+    difficulty = ENV.fetch('APP_DIFFICULTY', 1)
     sha2 = ''
     code = 0
     until sha2.starts_with?('0' * difficulty)
