@@ -72,7 +72,7 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              repository: tlwr/gds-techops-gameday-lt
+              repository: alexkinnanegds/lt
           run:
             path: /test/lt
       - try:
@@ -87,7 +87,7 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              repository: tlwr/gds-techops-gameday-lt
+              repository: alexkinnanegds/lt
           run:
             path: /test/lt
       - try:
@@ -102,7 +102,7 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              repository: tlwr/gds-techops-gameday-lt
+              repository: alexkinnanegds/lt
           run:
             path: /test/lt
 
