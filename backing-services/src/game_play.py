@@ -39,7 +39,7 @@ def send_docs(path=False):
 
     # first, get the absolute folder, this will be used to ensure we don't
     # add a directory walking vulnerability.
-    folder = abspath(normpath("src/game_play_docs"))
+    folder = abspath("game_play_docs")
     # build a list of files in the game_play_docs folder
     onlyfiles = list()
     for (dirpath, dirnames, filenames) in os.walk(folder):
@@ -52,6 +52,7 @@ def send_docs(path=False):
     for file in sorted(onlyfiles):
         if file.startswith(join(folder, path)) and file.endswith(".md"):
             file = file.replace(folder, "")
+            print(f"file:{file}")
             if "_" in file:
                 timestamp = file.replace(".md", "").split("_")[-1:][0]
                 if timestamp.isdigit():
@@ -59,6 +60,8 @@ def send_docs(path=False):
                         ret_file = file
             else:
                 ret_file = file
+
+    print(f"ret_file:{ret_file}")
 
     if ret_file:
         # if we have a file, lstrip any backslashes off the file and prepend
