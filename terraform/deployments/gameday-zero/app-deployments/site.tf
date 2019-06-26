@@ -6,7 +6,9 @@ terraform {
   }
 }
 
-provider "aws" {}
+provider "aws" {
+  region = "eu-west-2"
+}
 
 locals {
   db_password = "when-you-invent-the-ship-you-invent-the-shipwreck-2019"
@@ -23,12 +25,11 @@ module "app_deployment_one" {
   db_password = "${local.db_password}"
 
   participants = [
-    "rafal.proszowski",
-    "richard.towers",
+    "dan.jones"
   ]
 
   participants_vo = [
-    "rafal.proszowski",
+    "dan.jones"
   ]
 }
 
