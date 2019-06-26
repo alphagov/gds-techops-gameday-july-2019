@@ -2,19 +2,19 @@ groups:
   - name: monitoring
     jobs:
       - smoke-test
-      - load-test
-      - base-traffic
 
   - name: admin
     jobs:
       - splunk
       - backfill-db
+      - base-traffic
+      - load-test
 
 resources:
-  - name: every-one-minute
+  - name: every-30-s
     type: time
     source:
-      interval: 2m
+      interval: 30s
 
   - name: gds-techops-gameday-git
     type: git
@@ -28,17 +28,18 @@ jobs:
     serial: true
     public: true
     plan:
-      - get: every-one-minute
+      - get: every-30-s
         trigger: true
 
       - get: gds-techops-gameday-git
 
       - task: smoke
-        timeout: 30s
+        timeout: 120s
         config:
           params:
             APP_URL: https://((team)).game.gds-reliability.engineering
             IDENTIFIER: gameday-((team))
+            APP_DIFFICULTY: 1
 
           platform: linux
           image_resource:
@@ -59,19 +60,49 @@ jobs:
     serial: true
     public: true
     plan:
-      - task: 2-users-per-second
+      - try:
+        task: 5-users-per-second
         config: &load-test-config
           params:
             TARGET: https://((team)).game.gds-reliability.engineering/register
             RPS: 2
-            DURATION: 15m
+            DURATION: 1m
 
           platform: linux
           image_resource:
             type: docker-image
             source:
               repository: tlwr/gds-techops-gameday-lt
+          run:
+            path: /test/lt
+      - try:
+        task: 20-users-per-second
+        config: &load-test-config
+          params:
+            TARGET: https://((team)).game.gds-reliability.engineering/register
+            RPS: 15
+            DURATION: 1m
 
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: tlwr/gds-techops-gameday-lt
+          run:
+            path: /test/lt
+      - try:
+        task: 50-users-per-second
+        config: &load-test-config
+          params:
+            TARGET: https://((team)).game.gds-reliability.engineering/register
+            RPS: 20
+            DURATION: 1m
+
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: tlwr/gds-techops-gameday-lt
           run:
             path: /test/lt
 
