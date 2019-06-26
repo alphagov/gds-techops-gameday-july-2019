@@ -17,10 +17,15 @@ log_stream_name = /var/log/messages
 datetime_format = %b %d %H:%M:%S
 LOGS
 
+
 sed -i "s/us-east-1/eu-west-2/g" /etc/awslogs/awscli.conf
+
+usermod -a -G docker ssm-user
 
 service awslogsd restart
 service docker restart
+service ssm restart
+
 
 docker run \
   --log-driver=awslogs \
@@ -33,7 +38,7 @@ docker run \
   -e DB_USERNAME=app \
   -e DB_HOST='${db_host}' \
   -e DB_PASSWORD='${db_password}' \
-  -e APP_DIFFICULTY='1' \
+  -e APP_DIFFICULTY='2' \
   -d \
   --entrypoint rackup \
   alexkinnanegds/register-a-doge:latest
