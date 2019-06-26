@@ -20,7 +20,7 @@ resources:
     type: git
     source:
       uri: git@github.com:tlwr/gds-techops-gameday.git
-      branch: wip-tlwr
+      branch: master
       private_key: ((read_only_ssh_private_key))
 
 jobs:

@@ -65,7 +65,7 @@ resource "aws_instance" "app" {
   provider = "aws.${var.provider_role_alias}"
 
   ami                         = "${data.aws_ami.amazon_linux_2.id}"
-  instance_type               = "t2.medium"
+  instance_type               = "t3.nano"
   subnet_id                   = "${aws_subnet.z1.id}"
   iam_instance_profile        = "${aws_iam_instance_profile.app.name}"
   user_data                   = "${data.template_file.app_init.rendered}"
