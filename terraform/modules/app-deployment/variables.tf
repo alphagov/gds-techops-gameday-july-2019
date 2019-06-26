@@ -7,12 +7,13 @@ variable "db_password" {}
 variable "participants" {
   type = "list"
 }
+
 variable "participants_vo" {
   type = "list"
 }
 
 provider "aws" {
-  alias = "${var.provider_role_alias}"
+  alias  = "${var.provider_role_alias}"
   region = "eu-west-2"
 
   assume_role {

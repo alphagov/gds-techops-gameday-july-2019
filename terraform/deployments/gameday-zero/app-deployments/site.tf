@@ -25,11 +25,11 @@ module "app_deployment_one" {
   db_password = "${local.db_password}"
 
   participants = [
-    "dan.jones"
+    "dan.jones",
   ]
 
   participants_vo = [
-    "dan.jones"
+    "dan.jones",
   ]
 }
 
