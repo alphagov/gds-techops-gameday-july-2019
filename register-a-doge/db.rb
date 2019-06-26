@@ -1,5 +1,5 @@
 require 'date'
-
+require 'digest'
 require 'active_record'
 
 def setup_db_connection
@@ -21,6 +21,8 @@ def create_database(recreate: false)
       create_table 'registrations', id: :uuid, force: recreate do |t|
         t.string 'first_name'
         t.string 'last_name'
+        t.string 'code'
+        t.string 'registration'
 
         t.boolean 'anonymous', default: false
 
@@ -33,8 +35,9 @@ end
 
 class Registration < ActiveRecord::Base
   self.table_name = :registrations
-
   alias_attribute :guid, :id
+
+  after_create :registration_code
 
   scope :registrations_today, -> {
     where("created_at >= ?", Time.now.beginning_of_day)
@@ -60,5 +63,17 @@ class Registration < ActiveRecord::Base
         record.errors.add(attr, 'must have length between 2 and 64')
       end
     end
+  end
+
+  def registration_code
+    difficulty = ENV.fetch('APP_DIFFICULTY', 5)
+    sha2 = ''
+    code = 0
+    until sha2.starts_with?('0' * difficulty)
+      code += 1
+      sha2 = Digest::SHA2.hexdigest "#{first_name}#{last_name}#{code}"
+    end
+    self.registration = sha2
+    self.code = code
   end
 end
