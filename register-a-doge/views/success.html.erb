@@ -5,7 +5,10 @@
         Registration complete
       </h1>
 			<div class="govuk-panel__body">
-				Your reference number<br><strong><%= registration.guid %></strong>
+			    Your reference number<br><strong><%= registration.registration %></strong>
+			</div>
+                        <div class="govuk-panel__body">
+			    Your secret code is<br><strong>x<%= registration.code %>x</strong>
 			</div>
     </div>
 
