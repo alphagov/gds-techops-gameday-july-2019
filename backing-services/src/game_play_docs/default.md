@@ -3,8 +3,8 @@
 ### _What am I doing here?_
 You're here because you are awesome and you work for Government Digital Service 😎
 
-This documentation is for the 'Register to Boat', 1st July cross-TechOps game day.
+This environment is for game day documentation that can be dynamically changed through checkpoints, including time gates!
 
-[test](/docs/test)  
+### _Game days_
 
-### Caveats
+[Register to Doge - 1st July](/docs/register-to-doge)  
