@@ -33,6 +33,7 @@ docker run \
   -e DB_USERNAME=app \
   -e DB_HOST='${db_host}' \
   -e DB_PASSWORD='${db_password}' \
+  -e APP_DIFFICULTY='1' \
   -d \
   --entrypoint rackup \
   alexkinnanegds/register-a-doge:latest

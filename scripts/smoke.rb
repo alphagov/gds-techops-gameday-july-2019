@@ -4,7 +4,7 @@ require 'uri'
 require 'digest'
 APP_URL    = ENV.fetch('APP_URL')
 IDENTIFIER = ENV.fetch('IDENTIFIER')
-DIFFICULTY = ENV.fetch('APP_DIFFICULTY', 5)
+DIFFICULTY = ENV.fetch('APP_DIFFICULTY', 1)
 
 puts '[*] Making request'
 first_name = 'Smoke-01'
