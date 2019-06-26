@@ -1,0 +1,50 @@
+<h1 class="govuk-heading-xl">Register</h1>
+
+<form method="POST">
+
+  <% unless registration.errors.empty? %>
+    <div class="govuk-error-summary"
+         aria-labelledby="error-summary-title"
+         role="alert"
+         tabindex="-1"
+         data-module="error-summary">
+
+      <h2 class="govuk-error-summary__title" id="error-summary-title">
+        You are bad
+      </h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+          <% registration.errors.each do |attribute, err_msg| %>
+            <li>
+              <%= attribute.to_s.capitalize.gsub('_', ' ') %> <%= err_msg %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="first-name">
+      First name
+    </label>
+    <input class="govuk-input"
+           id="first-name"
+           name="first_name"
+           value="<%= registration.first_name %>"
+           type="text"/>
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="last-name">
+      Last name
+    </label>
+    <input class="govuk-input"
+           id="last-name"
+           name="last_name"
+           value="<%= registration.last_name %>"
+           type="text"/>
+  </div>
+
+  <button class="govuk-button">Register a Doge</button>
+</form>

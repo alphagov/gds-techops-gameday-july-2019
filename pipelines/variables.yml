@@ -1,0 +1,28 @@
+aws_gameday_zero_account_id: 277976119446
+aws_gameday_zero_role_arn: aws:iam::277976119446:role/bootstrap
+aws_gameday_zero_concourse_role_arn: arn:aws:iam::277976119446:role/concourse
+
+aws_gameday_one_account_id: 532889539897
+aws_gameday_one_role_arn: arn:aws:iam::532889539897:role/bootstrap
+aws_gameday_one_db_host: app.cunixosohqnq.eu-west-2.rds.amazonaws.com
+
+database_password: when-you-invent-the-ship-you-invent-the-shipwreck-2019
+
+read_only_ssh_private_key: |
+  -----BEGIN OPENSSH PRIVATE KEY-----
+  b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAlwAAAAdzc2gtcn
+  NhAAAAAwEAAQAAAIEAmyw8GBM/XDJmT43bHdA+Ci+UNUf8RD+Nxt+cDIYcJgX5DmIBYQRy
+  xpS4HsvuBKWG1LnrEIi7LBATbOM0jQDUalmhh8KWLi0SfR2S+93Cl6Ne8LHPr+cfQW6EWo
+  gv/LmNw4fOe4RfQX4/gEA9XF3GBFCflND7lgacadNHbo0dd0sAAAIgKwbWNCsG1jQAAAAH
+  c3NoLXJzYQAAAIEAmyw8GBM/XDJmT43bHdA+Ci+UNUf8RD+Nxt+cDIYcJgX5DmIBYQRyxp
+  S4HsvuBKWG1LnrEIi7LBATbOM0jQDUalmhh8KWLi0SfR2S+93Cl6Ne8LHPr+cfQW6EWogv
+  /LmNw4fOe4RfQX4/gEA9XF3GBFCflND7lgacadNHbo0dd0sAAAADAQABAAAAgDnP/D+4BB
+  Y0jNu87VMpP8QJv/0t6bX/u7HJo9kiqiAcf5M1PnBH+P81b3fB4NcIWLiu3/5UAvBCuQoL
+  iIu0MG8um8CObKCLN6kMShEEozAet4WNQQ9zQ8Huvos5clG/2GG/osdaxdY5iQlRGDMzc0
+  8LV4wK55/LyJYELqaTRvIpAAAAQAVCTSyuYKk66QksiI1WXeBjjTUfnP5Nc8kRgOomrvdg
+  o7o/rStvL/OkK82ahq0U+meZSkFy7WHGLvybkabkcqUAAABBAMfc8Gvjs1YB+QBOGqRnc3
+  3VEOI+XEjWRug0cQVhk6nvvH7pJrimqCVYXa13h8GjSijEMEhkgoQgysS3gym+eF0AAABB
+  AMbB3QxZhOrWDT3aivNBJxVSo5x1tqwkte4Hwhbfh48GBwjZLgdgOaa/XnA97WYf6YHhlc
+  OXBDVi6VTdPsWrE8cAAAAkdG9ieWxvcm5ld2VsY2hyaWNoYXJkc0BnZHM2Mjc1LmxvY2Fs
+  AQIDBAUGBw==
+  -----END OPENSSH PRIVATE KEY-----

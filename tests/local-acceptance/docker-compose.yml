@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  web:
+    build: ../../register-a-doge/
+    ports:
+      - '4567:4567'
+    depends_on:
+      - db
+      - splunk
+    command: ['rackup']
+    environment:
+      SPLUNK_KEY: $SPLUNK_KEY
+      SPLUNK_URI: https://splunk:8088
+      DB_HOST:    db
+
+  splunk:
+    image: splunk/splunk:latest
+    ports:
+      - '8000:8000'
+      - '9997:9997'
+      - '8088:8088'
+      - '8089:8089'
+    environment:
+      SPLUNK_START_ARGS: --accept-license --answer-yes
+      SPLUNK_PASSWORD:   $SPLUNK_PASSWORD

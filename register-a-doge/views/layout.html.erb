@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" class="govuk-template ">
+
+<head>
+  <meta charset="utf-8" />
+  <title>TECH.OPS Register a Doge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c0c" />
+  <link rel="stylesheet" type="text/css" href="/govuk-frontend.min.css" />
+  <meta property="og:image" content="/assets/images/govuk-opengraph-image.png">
+</head>
+
+<body class="govuk-template__body ">
+  <script>
+    document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
+
+  </script>
+
+  <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+
+  <header class="govuk-header " role="banner" data-module="header">
+    <div class="govuk-header__container govuk-width-container">
+      <div class="govuk-header__logo">
+        <a href="/" class="govuk-header__link govuk-header__link--homepage">
+          <span class="govuk-header__logotype">
+            <span class="govuk-header__logotype-text">
+              <img style="height: 30px;" src="/doge.gif" />
+              TECH.OPS
+            </span>
+          </span>
+        </a>
+      </div>
+      <div class="govuk-header__content">
+
+        <a href="/" class="govuk-header__link govuk-header__link--service-name">
+          Register a Doge
+        </a>
+
+        <button type="button" role="button" class="govuk-header__menu-button js-header-toggle" aria-controls="navigation" aria-label="Show or hide Top Level Navigation">Menu</button>
+        <nav>
+          <ul id="navigation" class="govuk-header__navigation " aria-label="Top Level Navigation">
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="/register">
+                Register
+              </a>
+            </li>
+            <li class="govuk-header__navigation-item">
+              <a class="govuk-header__link" href="/stats">
+                Stats
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+      <%= yield %>
+    </main>
+  </div>
+
+  <footer class="govuk-footer " role="contentinfo"></footer>
+</body>
+
+</html>
