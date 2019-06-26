@@ -35,4 +35,4 @@ docker run \
   -e DB_PASSWORD='${db_password}' \
   -d \
   --entrypoint rackup \
-  tlwr/register-a-doge:latest
+  alexkinnanegds/register-a-doge:latest
