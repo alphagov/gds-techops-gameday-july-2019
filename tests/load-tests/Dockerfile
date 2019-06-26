@@ -4,6 +4,7 @@ RUN mkdir  /test
 WORKDIR    /test
 COPY     . /test
 
+RUN go get
 RUN go build -o lt
 
 ENTRYPOINT ["/test/lt"]
