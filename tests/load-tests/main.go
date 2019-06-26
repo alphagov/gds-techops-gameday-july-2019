@@ -44,7 +44,7 @@ func main() {
 	targeter := NewStaticTargeter(**target)
 	attacker := vegeta.NewAttacker(
 		vegeta.Workers(100),
-		vegeta.Timeout(500*time.Millisecond),
+		vegeta.Timeout(20000*time.Millisecond),
 		vegeta.Connections(100),
 	)
 	results := attacker.Attack(
