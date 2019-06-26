@@ -31,7 +31,7 @@ if sha2 != expected
   exit 1
 end
 
-unless sha2.start_with?('0' * DIFFICULTY)
+unless sha2.start_with?('0' * DIFFICULTY.to_i)
   puts "[!] Reciept is not difficult enough!"
   exit 2
 end
