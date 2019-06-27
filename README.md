@@ -1,9 +1,14 @@
 # Ops manual
 ## Links
+
 Team docs: https://docs.zero.game.gds-reliability.engineering/docs
+
 Gameday admin repo: https://github.com/tlwr/gds-techops-game day
+
 Public register-a-doge repo: https://github.com/tlwr/register-a-doge
+
 concourse: https://concourse.zero.game.gds-reliability.engineering/
+
 retro notes: redacted
 
 ## Timeline
@@ -42,6 +47,8 @@ instances running in eu-west-2a for an hour. This should force the
 teams to rebuild with more redundancy.
 
 Update the team docs with a link to an AWS failure. Don't tell anyone yet.
+
+https://concourse.zero.game.gds-reliability.engineering/teams/main/pipelines/team-one/jobs/az_failure/
 
 ### 10:55 - Announce AZ failure
 Let everyone know that AWS have contacted us about the AZ
