@@ -24,7 +24,7 @@ concourse_update_1: concourse_login
 
 # Update all team's concourse pipelines
 # You have to be logged in to the concourse instance
-concourse_update_all: concourse_update_1
+concourse_update_all: concourse_login concourse_update_1
 
 # Update the admin account: route53 / state bucket
 terraform_account:
