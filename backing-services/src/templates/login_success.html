@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h1 class="govuk-heading-xl">Success!</h1>
+
+{% if login_picture != "" %}
+<div>
+  <img width="128px" src="{{ login_picture }}" />
+</div>
+{% endif %}
+<br />
+
+<a href="/docs" role="button" draggable="false" class="govuk-button govuk-button--start">
+  Continue...
+</a>
+{% endblock %}

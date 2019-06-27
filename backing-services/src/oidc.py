@@ -58,21 +58,19 @@ def login(encoded_jwt, verify=True):
 
 def is_logged_in(app):
     if app.config.get("ENV", "production") == "production":
-        print("is_logged_in: running")
-        print(request.headers)
-        login_details = login(
-            request.headers["X-Amzn-Oidc-Data"],
-            verify=app.config.get("verify_oidc", True),
-        )
-        session.new = True
-        session["production_session"] = True
-        session["login_details"] = login_details
-        print(login_details)
-        return True
-    else:
-        session.new = True
-        session["auth_debug"] = True
-        return True
+        if app.config["verify_oidc"]:
+            login_details = login(
+                request.headers["X-Amzn-Oidc-Data"],
+                verify=app.config.get("verify_oidc", True),
+            )
+            session.new = True
+            session["production_session"] = True
+            session["login_details"] = login_details
+            return True
+
+    session.new = True
+    session["auth_debug"] = True
+    return True
 
 
 def login_required(app):

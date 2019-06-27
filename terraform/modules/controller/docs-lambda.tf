@@ -11,7 +11,7 @@ resource "aws_lambda_function" "gde-docs-lambda" {
   function_name    = "gde-docs-lambda"
   role             = "${aws_iam_role.gde-docs-iam.arn}"
   handler          = "game_play_lambda.lambda_handler"
-  runtime          = "python3.7"
+  runtime          = "python3.6"
   memory_size      = "1024"
   timeout          = "60"
 
