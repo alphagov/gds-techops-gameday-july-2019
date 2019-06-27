@@ -13,7 +13,18 @@ resource "aws_security_group_rule" "ingress_ingress_from_internet" {
   to_port   = 443
   protocol  = "tcp"
 
-  cidr_blocks       = ["${module.gds_ips.gds_cidr_blocks}"]
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.ingress.id}"
+}
+
+resource "aws_security_group_rule" "ingress_ingress_80_from_internet" {
+  type = "ingress"
+
+  from_port = 80
+  to_port   = 80
+  protocol  = "tcp"
+
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.ingress.id}"
 }
 

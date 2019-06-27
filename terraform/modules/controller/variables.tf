@@ -13,3 +13,13 @@ module "gds_ips" {
 }
 
 data "aws_caller_identity" "current" {}
+
+variable "oidc_client_id" {
+  description = "OIDC client ID"
+  type        = "string"
+}
+
+variable "oidc_client_secret" {
+  description = "OIDC client secret"
+  type        = "string"
+}
