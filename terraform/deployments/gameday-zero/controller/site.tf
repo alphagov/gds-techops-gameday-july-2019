@@ -13,10 +13,10 @@ provider "aws" {
 module "controller" {
   source = "../../../modules/controller"
 
-  root_domain         = "game.gds-reliability.engineering"
-  subdomain           = "zero"
-  oidc_client_id      = "973656886573-ucu4k608tqo80uc09mthiftbjd25lms4.apps.googleusercontent.com"
-  oidc_client_secret  = "EnxjWs3jr69HdBygeyGcPmA1"
+  root_domain        = "game.gds-reliability.engineering"
+  subdomain          = "zero"
+  oidc_client_id     = "973656886573-ucu4k608tqo80uc09mthiftbjd25lms4.apps.googleusercontent.com"
+  oidc_client_secret = "EnxjWs3jr69HdBygeyGcPmA1"
 }
 
 output "concourse_username" {
