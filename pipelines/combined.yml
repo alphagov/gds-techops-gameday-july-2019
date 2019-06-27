@@ -39,7 +39,7 @@ jobs:
           params:
             APP_URL: https://((team)).game.gds-reliability.engineering
             IDENTIFIER: gameday-((team))
-            APP_DIFFICULTY: 1
+            APP_DIFFICULTY: 4
 
           platform: linux
           image_resource:
@@ -61,12 +61,12 @@ jobs:
     public: true
     plan:
       - try:
-        task: 5-users-per-second
+        task: 2-users-per-second
         config: &load-test-config
           params:
             TARGET: https://((team)).game.gds-reliability.engineering/register
             RPS: 2
-            DURATION: 1m
+            DURATION: 1h
 
           platform: linux
           image_resource:
@@ -76,12 +76,12 @@ jobs:
           run:
             path: /test/lt
       - try:
-        task: 20-users-per-second
+        task: 15-users-per-second
         config: &load-test-config
           params:
             TARGET: https://((team)).game.gds-reliability.engineering/register
             RPS: 15
-            DURATION: 1m
+            DURATION: 1h
 
           platform: linux
           image_resource:
@@ -91,12 +91,12 @@ jobs:
           run:
             path: /test/lt
       - try:
-        task: 50-users-per-second
+        task: 30-users-per-second
         config: &load-test-config
           params:
             TARGET: https://((team)).game.gds-reliability.engineering/register
-            RPS: 20
-            DURATION: 1m
+            RPS: 30
+            DURATION: 3h
 
           platform: linux
           image_resource:
