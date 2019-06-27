@@ -21,6 +21,7 @@ sed -i "s/us-east-1/eu-west-2/g" /etc/awslogs/awscli.conf
 
 service awslogsd restart
 service docker restart
+systemctl enable docker.service
 
 docker run \
   --log-driver=awslogs \
