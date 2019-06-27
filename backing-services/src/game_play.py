@@ -22,7 +22,6 @@ from flask import (
 app = Flask(__name__)
 app.config["verify_oidc"] = True
 DEFAULT_OK_RESPONSE = "OK"
-mastertitle = "Temp"
 
 
 @app.route("/")
@@ -110,24 +109,43 @@ def handle_bad_request_500(e):
 
 @app.route("/login")
 def send_login():
-    return (
-        render_template("login.html", title=f"{mastertitle}", gfe_ver="2.9.0"),
-        200,
-    )
+    return (render_template("login.html", title="Login", gfe_ver="2.9.0"), 200)  # noqa
 
 
 @app.route("/logout")
 def send_logout():
     session.clear()
-    return redirect("/login", code=302)
+    resp = redirect("/login", code=302)
+    resp.set_cookie("session", "", expires=0)
+    resp.set_cookie("AWSELBAuthSessionCookie", "", expires=0)
+    resp.set_cookie("AWSELBAuthSessionCookie-0", "", expires=0)
+    return resp
 
 
-@app.route("/oauth2/idpresponse")
+@app.route("/login_success")
+@login_required(app)
+def send_login_success(login_details):
+    image = ""
+    if "picture" in login_details:
+        image = login_details["picture"]
+
+    return (
+        render_template(
+            "login_success.html",
+            title="Success!",
+            gfe_ver="2.9.0",
+            login_picture=image,
+            loggedin=True,
+        ),
+        200,
+    )
+
+
 @app.route("/auth")
 def handle_auth():
     print("handle_auth")
     if is_logged_in(app):
-        return redirect("/", code=302)
+        return redirect("/login_success", code=302)
     else:
         return redirect("/login", code=302)
 
