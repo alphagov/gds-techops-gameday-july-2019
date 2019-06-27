@@ -6,13 +6,23 @@ import random
 import string
 import json
 import markdown2
-from flask import Flask, request, send_from_directory, render_template, redirect
 from flask_httpauth import HTTPDigestAuth
 from os.path import abspath, normpath, join, isfile
+from oidc import login_required, is_logged_in
+from flask import (
+    Flask,
+    session,
+    request,
+    send_from_directory,
+    render_template,
+    redirect,
+)
+
 
 app = Flask(__name__)
-
+app.config["verify_oidc"] = True
 DEFAULT_OK_RESPONSE = "OK"
+mastertitle = "Temp"
 
 
 @app.route("/")
@@ -33,7 +43,8 @@ def send_assets(path):
 
 @app.route("/docs")
 @app.route("/docs/<path:path>")
-def send_docs(path=False):
+@login_required(app)
+def send_docs(login_details, path=False):
     if not path:
         path = "default"
 
@@ -52,7 +63,6 @@ def send_docs(path=False):
     for file in sorted(onlyfiles):
         if file.startswith(join(folder, path)) and file.endswith(".md"):
             file = file.replace(folder, "")
-            print(f"file:{file}")
             if "_" in file:
                 timestamp = file.replace(".md", "").split("_")[-1:][0]
                 if timestamp.isdigit():
@@ -60,8 +70,6 @@ def send_docs(path=False):
                         ret_file = file
             else:
                 ret_file = file
-
-    print(f"ret_file:{ret_file}")
 
     if ret_file:
         # if we have a file, lstrip any backslashes off the file and prepend
@@ -76,8 +84,7 @@ def send_docs(path=False):
                     "docs.html",
                     title="Documentation",
                     gfe_ver="2.9.0",
-                    # loggedin should be True if there was auth...
-                    loggedin=False,
+                    loggedin=True,
                     content=md,
                 ),
                 200,
@@ -101,8 +108,34 @@ def handle_bad_request_500(e):
     )
 
 
+@app.route("/login")
+def send_login():
+    return (
+        render_template("login.html", title=f"{mastertitle}", gfe_ver="2.9.0"),
+        200,
+    )
+
+
+@app.route("/logout")
+def send_logout():
+    session.clear()
+    return redirect("/login", code=302)
+
+
+@app.route("/oauth2/idpresponse")
+@app.route("/auth")
+def handle_auth():
+    print("handle_auth")
+    if is_logged_in(app):
+        return redirect("/", code=302)
+    else:
+        return redirect("/login", code=302)
+
+
 if __name__ == "__main__":
+    app.secret_key = "notrandomkey"
     app.config["ENV"] = "development"
     app.config["TESTING"] = True
     app.config["DEBUG"] = True
+    app.config["verify_oidc"] = False
     app.run(port=5000)

@@ -1,5 +1,10 @@
 # Lambda
 
+resource "random_string" "password" {
+  length = 32
+  special = false
+}
+
 resource "aws_lambda_function" "gde-docs-lambda" {
   filename         = "../../../../backing-services/gde-docs.zip"
   source_code_hash = "${filebase64sha256("../../../../backing-services/gde-docs.zip")}"
@@ -7,6 +12,15 @@ resource "aws_lambda_function" "gde-docs-lambda" {
   role             = "${aws_iam_role.gde-docs-iam.arn}"
   handler          = "game_play_lambda.lambda_handler"
   runtime          = "python3.7"
+  memory_size      = "1024"
+  timeout          = "60"
+
+  environment {
+    variables = {
+      SECRET_KEY = "${random_string.password.result}"
+      production = "production"
+    }
+  }
 }
 
 resource "aws_iam_role" "gde-docs-iam" {

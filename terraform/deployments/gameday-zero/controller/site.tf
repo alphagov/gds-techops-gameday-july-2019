@@ -13,8 +13,10 @@ provider "aws" {
 module "controller" {
   source = "../../../modules/controller"
 
-  root_domain = "game.gds-reliability.engineering"
-  subdomain   = "zero"
+  root_domain         = "game.gds-reliability.engineering"
+  subdomain           = "zero"
+  oidc_client_id      = "redacted"
+  oidc_client_secret  = "redacted"
 }
 
 output "concourse_username" {

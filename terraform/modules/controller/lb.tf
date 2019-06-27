@@ -14,6 +14,22 @@ resource "aws_lb" "ingress" {
   ]
 }
 
+resource "aws_lb_listener" "ingress_http" {
+  load_balancer_arn = "${aws_lb.ingress.arn}"
+  port              = "80"
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
 resource "aws_lb_listener" "ingress_https" {
   load_balancer_arn = "${aws_lb.ingress.arn}"
   port              = "443"
@@ -131,9 +147,43 @@ resource "aws_lb_listener_rule" "hec" {
   }
 }
 
-resource "aws_lb_listener_rule" "documentation" {
+resource "aws_lb_listener_rule" "documentation_auth" {
   listener_arn = "${aws_lb_listener.ingress_https.arn}"
   priority     = 104
+
+  action {
+    type = "authenticate-oidc"
+
+    authenticate_oidc {
+      authorization_endpoint      = "https://accounts.google.com/o/oauth2/auth"
+      client_id                   = "${var.oidc_client_id}"
+      client_secret               = "${var.oidc_client_secret}"
+      issuer                      = "https://accounts.google.com"
+      token_endpoint              = "https://oauth2.googleapis.com/token"
+      user_info_endpoint          = "https://openidconnect.googleapis.com/v1/userinfo"
+      on_unauthenticated_request  = "authenticate"
+    }
+  }
+
+  action {
+    target_group_arn = "${aws_lb_target_group.documentation.arn}"
+    type             = "forward"
+  }
+
+  condition {
+    field  = "path-pattern"
+    values = ["/auth"]
+  }
+
+  condition {
+    field  = "host-header"
+    values = ["docs.*"]
+  }
+}
+
+resource "aws_lb_listener_rule" "documentation" {
+  listener_arn = "${aws_lb_listener.ingress_https.arn}"
+  priority     = 105
 
   action {
     type             = "forward"

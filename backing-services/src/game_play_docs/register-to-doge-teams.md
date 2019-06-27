@@ -33,6 +33,3 @@ There are 7 teams of between 7-8 people.
 ---
 
 #### Team Seven
-
----
-\# Released at 10am / 1561971600
