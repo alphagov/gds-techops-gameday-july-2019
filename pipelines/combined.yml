@@ -9,6 +9,7 @@ groups:
       - backfill-db
       - base-traffic
       - load-test
+      - az_failure
 
 resources:
   - name: every-30-s
@@ -229,3 +230,28 @@ jobs:
             path: ruby
             dir: gds-techops-gameday-git
             args: ['scripts/bootstrap-splunk.rb']
+
+
+  - name: az_failure
+    serial: true
+    public: true
+    plan:
+      - try:
+        task: Disable AZ A
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: alexkinnanegds/az_failure
+          run:
+            path: /app/az_failure.py
+            args:
+              - "--region"
+              - eu-west-2
+              - "--az"
+              - a
+              - "--duration"
+              - 60
+              - "--arn"
+              - "arn:aws:iam::532889539897:role/bootstrap"

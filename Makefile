@@ -3,28 +3,39 @@ docker_build_doge:
 
 # Need to be logged in to docker
 docker_push_doge: docker_build_doge
-	cd register-a-doge; docker push alexkinnanegds/register-a-doge:latest
+	docker push alexkinnanegds/register-a-doge:latest
 
 # Build a new load testing image
 docker_build_lt:
 	cd tests/load-tests; docker build -t alexkinnanegds/lt:latest .
 
 docker_push_lt: docker_build_lt
-	cd tests/load-tests; docker push alexkinnanegds/lt:latest
+	docker push alexkinnanegds/lt:latest
+
+# Build az_failure_image
+docker_build_az_failure:
+	cd scripts/az_failure; docker build -t alexkinnanegds/az_failure:latest .
+
+docker_push_az_failure: docker_build_az_failure
+	docker push alexkinnanegds/az_failure:latest
+
+docker_run_az_failure: docker_build_az_failure
+	docker run -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SESSION_TOKEN="${AWS_SESSION_TOKEN}" alexkinnanegds/az_failure
 
 # Update team `one` concourse pipeline
 # Download `fly` from concourse landing page
 # https://concourse.zero.game.gds-reliability.engineering/api/v1/cli?arch=amd64&platform=linux
 # https://concourse.zero.game.gds-reliability.engineering/api/v1/cli?arch=amd64&platform=darwin
+# Run login before any other tasks
 concourse_login:
 	fly login --concourse-url https://concourse.zero.game.gds-reliability.engineering/ -t main
 
-concourse_update_1: concourse_login
+concourse_update_1:
 	cd pipelines; fly -t main set-pipeline -c combined.yml -p team-one --load-vars-from variables.yml
 
 # Update all team's concourse pipelines
 # You have to be logged in to the concourse instance
-concourse_update_all: concourse_login concourse_update_1
+concourse_update_all:concourse_update_1
 
 # Update the admin account: route53 / state bucket
 terraform_account:
