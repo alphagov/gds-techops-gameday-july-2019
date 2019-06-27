@@ -26,3 +26,6 @@ read_only_ssh_private_key: |
   OXBDVi6VTdPsWrE8cAAAAkdG9ieWxvcm5ld2VsY2hyaWNoYXJkc0BnZHM2Mjc1LmxvY2Fs
   AQIDBAUGBw==
   -----END OPENSSH PRIVATE KEY-----
+team: one
+db_host: app.cunixosohqnq.eu-west-2.rds.amazonaws.com
+splunk_pass: 99SrjRQuqz7icorhmytCV76kwGVqxnENH2S8uyGnVtCCiYD4dRLWsXgFzDDoaTbJ
