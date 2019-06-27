@@ -1,6 +1,9 @@
 docs_make:
 	cd backing-services; make
 
+scoreboard_make:
+	cd scoreboard; make
+
 docker_build_doge:
 	cd register-a-doge; docker build -t alexkinnanegds/register-a-doge:latest .
 
@@ -56,8 +59,10 @@ terraform_app_destroy:
 terraform_app_reset: terraform_app_destroy terraform_app
 
 # Update the controller infrastructure
-terraform_controller: docs_make
+terraform_controller:
 	cd terraform/deployments/gameday-zero/controller; terraform apply
+
+terraform_controller_deps: docs_make scoreboard_make terraform_controller
 
 terraform_init:
 	cd terraform/deployments/gameday-zero/account; terraform init

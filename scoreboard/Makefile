@@ -1,3 +1,4 @@
+.SHELL := /bin/bash
 .DEFAULT_GOAL := zip
 .PHONY = clean
 
@@ -6,21 +7,16 @@ test:
 
 target_dir: # test
 	rm -rf .target/
-	mkdir -p .target/assets
-	mkdir -p .target/game_play_docs
-	mkdir -p .target/templates
+	mkdir -p .target/python/lib/python3.6/site-packages
 
 copy_src: target_dir
 	cp src/*.py .target
-	cp -R src/assets/* .target/assets/
-	cp -R src/game_play_docs/* .target/game_play_docs/
-	cp -R src/templates/* .target/templates/
 
 add_deps: target_dir
-	bash -c "echo -e '[install]\nprefix=\n' > setup.cfg"; pip3 install -r requirements.txt -t .target
+	bash -c "echo -e '[install]\nprefix=\n' > setup.cfg"; pip3 install -r requirements.txt --system -t .target/python/lib/python3.6/site-packages
 
 clean:
-	rm -rf __pycache__ .coverage .target *.egg-info .tox venv *.zip .pytest_cache htmlcov **/__pycache__ **/*.pyc
+	rm -rf __pycache__ .coverage *.zip *.egg-info .tox venv .pytest_cache htmlcov **/__pycache__ **/*.pyc
 
 slim_deployment:
 	find . -iname '*.so' -exec strip {} \;
@@ -43,8 +39,11 @@ slim_deployment:
 	find .target -type f -a -name '*.rst' -print0 | xargs -0 rm -f
 	find .target -type f -a -name '*.py' -print0 | xargs -0 rm -f
 
-zip: clean add_deps copy_src slim_deployment
-	cd .target; zip -9 ../gde-docs.zip -r .
+
+zip: clean add_deps slim_deployment
+	cd .target; zip -9 ../scoreboard_layer1.zip -r -@ < ../layer1
+	cd .target; zip -9 ../scoreboard_layer2.zip -r -@ < ../layer2
+	cd src; zip -9 ../scoreboard.zip -r .
 
 deploy: zip
 	cd terraform/firebreak-q1-event-normalisation; terraform apply

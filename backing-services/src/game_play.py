@@ -23,7 +23,6 @@ app = Flask(__name__)
 app.config["verify_oidc"] = True
 DEFAULT_OK_RESPONSE = "OK"
 
-
 @app.route("/")
 def home():
     ua = request.headers.get("User-Agent")
