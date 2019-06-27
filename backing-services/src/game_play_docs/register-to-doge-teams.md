@@ -110,7 +110,3 @@ Members:
 - Michael Mokrysz
 - Thierry Ndangi
 - Ben Andrews
-
-
----
-\# Released at 10am / 1561971600

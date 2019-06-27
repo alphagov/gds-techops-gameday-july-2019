@@ -2,3 +2,7 @@ serverless_wsgi
 flask
 flask_httpauth
 markdown2
+pyjwt
+requests
+cryptography
+cffi
