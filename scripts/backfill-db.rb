@@ -1,4 +1,4 @@
-require 'date'
+\require 'date'
 require 'pg'
 
 DB_HOST           = ENV.fetch('DB_HOST', 'localhost')
@@ -16,8 +16,8 @@ connection = PG.connect(
   days_registrations = rand(MAX_REGISTRATIONS)
 
   days_registrations.times do
-    first_name = WORDS.sample.capitalize
-    last_name  = WORDS.sample.capitalize
+    first_name = "#{WORDS.sample.capitalize}a"
+    last_name  = "#{WORDS.sample.capitalize}z"
 
     query = <<~QUERY
       INSERT INTO registrations
