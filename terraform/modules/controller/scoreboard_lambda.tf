@@ -24,6 +24,7 @@ resource "aws_lambda_function" "scoreboard-lambda" {
   handler          = "scoreboard.lambda_handler"
   runtime          = "python3.6"
   timeout          = "30"
+  memory_size      = 512
   layers           = ["${aws_lambda_layer_version.scoreboard_layer1.arn}", "${aws_lambda_layer_version.scoreboard_layer2.arn}"]
 }
 

@@ -27,13 +27,13 @@ slim_deployment:
 	find .target -name "*-info" -type d -exec rm -rdf {} +
 	find .target -name "tests" -type d -exec rm -rdf {} +
 	find .target -name "*.txt" -type d -exec rm -rdf {} +
-	rm -rdf /tmp/vendored/boto3/
-	rm -rdf /tmp/vendored/botocore/
-	rm -rdf /tmp/vendored/docutils/
-	rm -rdf /tmp/vendored/dateutil/
-	rm -rdf /tmp/vendored/jmespath/
-	rm -rdf /tmp/vendored/s3transfer/
-	rm -rdf /tmp/vendored/numpy/doc/
+	rm -rdf .target/boto3/
+	rm -rdf .target/botocore/
+	rm -rdf .target/docutils/
+	rm -rdf .target/dateutil/
+	rm -rdf .target/jmespath/
+	rm -rdf .target/s3transfer/
+	rm -rdf .target/numpy/doc/
 	python3 -m compileall -f .
 	find .target -type f -name '*.pyc' | while read f; do n=$$(echo $$f | sed 's/__pycache__\///' | sed 's/.cpython-36//'); cp $$f  $$n; done
 	find .target -type d -a -name '__pycache__' -print0 | xargs -0 rm -rf
@@ -41,7 +41,6 @@ slim_deployment:
 	find .target -type f -a -name '*.h' -print0 | xargs -0 rm -f
 	find .target -type f -a -name '*.exe' -print0 | xargs -0 rm -f
 	find .target -type f -a -name '*.rst' -print0 | xargs -0 rm -f
-	find .target -type f -a -name '*.py' -print0 | xargs -0 rm -f
 
 zip: clean add_deps copy_src slim_deployment
 	cd .target; zip -9 ../gde-docs.zip -r .

@@ -8,7 +8,6 @@ from dash.dependencies import Input, Output
 import boto3
 import serverless_wsgi
 
-data = None
 app = dash.Dash(__name__)
 app.css.config.serve_locally = False
 app.scripts.config.serve_locally = False
@@ -19,18 +18,15 @@ app.layout = html.Div(
             dcc.Graph(id="live-update-graph", style={"height": "95vh"}),
             dcc.Interval(
                 id="interval-component",
-                interval=60 * 1000,  # in milliseconds
+                interval=10 * 1000,  # in milliseconds
                 n_intervals=0,
             ),
         ]
     )
 )
-app.css.config.serve_locally = False
-app.scripts.config.serve_locally = False
 
 
 def lambda_handler(event, context):
-
     print(event)
     print(context)
     return serverless_wsgi.handle_request(app.server, event, context)
