@@ -23,6 +23,7 @@ app = Flask(__name__)
 app.config["verify_oidc"] = True
 DEFAULT_OK_RESPONSE = "OK"
 
+
 @app.route("/")
 def home():
     ua = request.headers.get("User-Agent")
@@ -31,7 +32,7 @@ def home():
         print("This is a Health Check Request")
         return "GTG"
 
-    return redirect("/docs")
+    return redirect("/docs", code=302)
 
 
 @app.route("/assets/<path:path>")
@@ -48,7 +49,10 @@ def send_docs(login_details, path=False):
 
     # first, get the absolute folder, this will be used to ensure we don't
     # add a directory walking vulnerability.
-    folder = abspath("game_play_docs")
+    if app.config["ENV"] == "unittest":
+        folder = abspath("src/game_play_docs")
+    else:
+        folder = abspath("game_play_docs")
     # build a list of files in the game_play_docs folder
     onlyfiles = list()
     for (dirpath, dirnames, filenames) in os.walk(folder):
@@ -142,7 +146,6 @@ def send_login_success(login_details):
 
 @app.route("/auth")
 def handle_auth():
-    print("handle_auth")
     if is_logged_in(app):
         return redirect("/login_success", code=302)
     else:
@@ -154,5 +157,5 @@ if __name__ == "__main__":
     app.config["ENV"] = "development"
     app.config["TESTING"] = True
     app.config["DEBUG"] = True
-    app.config["verify_oidc"] = False
+    app.config["verify_oidc"] = True
     app.run(port=5000)

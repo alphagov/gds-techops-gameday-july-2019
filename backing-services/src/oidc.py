@@ -57,19 +57,18 @@ def login(encoded_jwt, verify=True):
 
 
 def is_logged_in(app):
-    if app.config.get("ENV", "production") == "production":
-        if app.config["verify_oidc"]:
-            login_details = login(
-                request.headers["X-Amzn-Oidc-Data"],
-                verify=app.config.get("verify_oidc", True),
-            )
-            session.new = True
-            session["production_session"] = True
-            session["login_details"] = login_details
-            return True
-
     session.new = True
-    session["auth_debug"] = True
+
+    if app.config["ENV"] == "development" or app.config["ENV"] == "unittest":
+        login_details = {}
+        session["login_details"] = login_details
+        return True
+
+    login_details = login(
+        request.headers["X-Amzn-Oidc-Data"], verify=app.config.get("verify_oidc", True)
+    )
+    session["production_session"] = True
+    session["login_details"] = login_details
     return True
 
 
@@ -83,14 +82,21 @@ def login_required(app):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            if app.config.get("ENV", "production") == "production":
-                if "production_session" in session and "login_details" in session:
-                    if session["production_session"] and session["login_details"]:
-                        return f(session["login_details"], *args, **kwargs)
-            else:
-                if "auth_debug" in session and session["auth_debug"]:
-                    return f({}, *args, **kwargs)
+            if "production_session" in session and "login_details" in session:
+                if session["production_session"]:
+                    print("login_required:production_session")
+                    return f(session["login_details"], *args, **kwargs)
 
+            if app.config["ENV"] == "unittest" and app.config["verify_oidc"]:
+                print("login_required:unittest")
+                return f({}, *args, **kwargs)
+
+            if app.config["ENV"] == "development":
+                if "login_details" in session:
+                    print("login_required:development")
+                    return f(session["login_details"], *args, **kwargs)
+
+            print("login_required:NO AUTH!")
             return redirect("/login", code=302)
 
         return decorated_function

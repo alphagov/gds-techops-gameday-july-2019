@@ -13,7 +13,7 @@ copy_src: target_dir
 	cp src/*.py .target
 
 add_deps: target_dir
-	bash -c "echo -e '[install]\nprefix=\n' > setup.cfg"; pip3 install -r requirements.txt --system -t .target/python/lib/python3.6/site-packages
+	bash -c "echo -e '[install]\nprefix=\n' > setup.cfg"; pip3 install -r requirements.txt -t .target/python/lib/python3.6/site-packages
 
 clean:
 	rm -rf __pycache__ .coverage *.zip *.egg-info .tox venv .pytest_cache htmlcov **/__pycache__ **/*.pyc
