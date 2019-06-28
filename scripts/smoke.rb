@@ -31,7 +31,7 @@ if sha2 != expected
   exit 1
 end
 
-unless sha2.hex.to_s(2).rjust(sha2.size*4, '0').starts_with?('0' * difficulty)
+unless sha2.hex.to_s(2).rjust(sha2.size*4, '0').starts_with?('0' * DIFFICULTY)
   puts "[!] Reciept is not difficult enough!"
   exit 2
 end
