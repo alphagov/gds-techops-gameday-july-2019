@@ -72,7 +72,7 @@ terraform_init:
 
 # Run register a doge locally
 local_runapp:
-	cd register-a-doge; bundle install --path vendor/bundle; APP_DIFFICULTY=6 bundle exec rackup & sleep 3s
+	cd register-a-doge; bundle install --path vendor/bundle; APP_DIFFICULTY=4 bundle exec rackup & sleep 3s
 
 local_smoketest:
 	- cd scripts; APP_URL=http://localhost:4567 IDENTIFIER=test APP_DIFFICULTY=2 ./smoke.rb
@@ -91,3 +91,6 @@ smoketest_1:
 loadtest_1:
 	docker pull alexkinnanegds/lt
 	docker run alexkinnanegds/lt --target=https://one.game.gds-reliability.engineering/register --rps=3 --duration=1m
+
+local_locust:
+	APP_DIFFICULTY=4 TEAM=two POINTS=1 locust -f scripts/locust.py -c 5 -r 1 --no-web --host http://localhost:4567
