@@ -1,4 +1,4 @@
-\require 'date'
+require 'date'
 require 'pg'
 
 DB_HOST           = ENV.fetch('DB_HOST', 'localhost')
