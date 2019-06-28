@@ -52,6 +52,12 @@ def get_data():
     teams = {
         "one": {"score": [0], "datetime": []},
         "two": {"score": [0], "datetime": []},
+        "three": {"score": [0], "datetime": []},
+        "four": {"score": [0], "datetime": []},
+        "five": {"score": [0], "datetime": []},
+        "six": {"score": [0], "datetime": []},
+        "seven": {"score": [0], "datetime": []},
+        "eight": {"score": [0], "datetime": []},
     }
 
     for i in items:
