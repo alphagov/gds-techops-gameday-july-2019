@@ -71,6 +71,11 @@ def test_docs_auth(authenticated):
     assert 200 == result.status_code
 
 
+def test_scoreboard_auth(authenticated):
+    result = authenticated.get("/scoreboard")
+    assert b"/iframe" in result.data and 200 == result.status_code
+
+
 def test_notfound(unauthenticated):
     result = unauthenticated.get("/non-exist")
     assert 404 == result.status_code

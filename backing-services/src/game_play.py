@@ -115,6 +115,21 @@ def send_login():
     return (render_template("login.html", title="Login", gfe_ver="2.9.0"), 200)  # noqa
 
 
+@app.route("/scoreboard")
+@login_required(app)
+def send_scoreboard(login_details):
+    return (
+        render_template(
+            "scoreboard.html",
+            title="Scores",
+            gfe_ver="2.9.0",
+            loggedin=True,
+            nav_scoreboard=True,
+        ),
+        200,
+    )
+
+
 @app.route("/logout")
 def send_logout():
     session.clear()
