@@ -20,3 +20,7 @@ provider "aws" {
     role_arn = "${var.provider_role_arn}"
   }
 }
+
+data "aws_caller_identity" "current" {
+  provider = "aws.${var.provider_role_alias}"
+}
