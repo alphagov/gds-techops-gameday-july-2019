@@ -69,7 +69,7 @@ Let everyone know that AWS have contacted us about the AZ
 failure. Direct them to the link TODO.
 
 Send out a slack message to all channels:
-:AWS: :siren: AWS *eu-west-2* AZ is having intermittent issues. There may be disruption to your service! See the team docs for more details :siren: :AWS: 
+:AWS: :siren: AWS *eu-west-2* AZ is having intermittent issues. There may be disruption to your service! See the team docs for more details :siren: :AWS:
 
 ### 11:05 - Ask for retro notes
 Tell everyone that we want the results of their retro soon and we want
@@ -102,7 +102,7 @@ Answers to the google form are here: redacted
 
 ### 12:20 - Announce detection of forged doge registrations
 People are forging doge registations! At 12:30 we are going to
-increase the registration code algorithm difficulty to `5`.
+increase the registration code algorithm difficulty to `6`.
 
 Slack message:
 :siren: It's been brought to out attention that people may be forging doge registrations! Please investigate. :siren:
