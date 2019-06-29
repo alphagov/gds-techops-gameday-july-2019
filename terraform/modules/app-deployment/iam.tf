@@ -31,7 +31,7 @@ resource "aws_iam_role_policy_attachment" "gameday_admin" {
   provider = "aws.${var.provider_role_alias}"
 
   role       = "${aws_iam_role.gameday.name}"
-  policy_arn = "arn:aws:iam::aws:policy/PowerUserAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 resource "aws_iam_role" "gameday_vo" {

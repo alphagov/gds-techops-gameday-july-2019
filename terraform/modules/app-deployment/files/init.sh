@@ -20,12 +20,10 @@ LOGS
 
 sed -i "s/us-east-1/eu-west-2/g" /etc/awslogs/awscli.conf
 
-usermod -a -G docker ssm-user
-
 service awslogsd restart
 service docker restart
-service ssm restart
 
+sleep 2s
 
 docker run \
   --log-driver=awslogs \
@@ -38,7 +36,7 @@ docker run \
   -e DB_USERNAME=app \
   -e DB_HOST='${db_host}' \
   -e DB_PASSWORD='${db_password}' \
-  -e APP_DIFFICULTY='4' \
+  -e APP_DIFFICULTY='17' \
   -d \
   --entrypoint rackup \
   alexkinnanegds/register-a-doge:latest
