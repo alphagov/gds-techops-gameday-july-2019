@@ -13,12 +13,18 @@ groups:
       - az_failure
       - gdpr-check
       - troll
+      - cost
 
 resources:
-  # - name: every-60-s
-  #   type: time
-  #   source:
-  #     interval: 60s
+  - name: every-30-s
+    type: time
+    source:
+      interval: 30s
+
+  - name: every-60-s
+    type: time
+    source:
+      interval: 60s
 
   - name: every-120-s
     type: time
@@ -77,6 +83,7 @@ jobs:
             POINTS: ((points))
             SWARM_SCALE_UP: ((swarm_scale_up))
             SWARM_SCALE_DOWN: ((swarm_scale_down))
+            CHANCE: ((chance))
 
           platform: linux
           image_resource:
@@ -250,13 +257,39 @@ jobs:
               - "--duration"
               - ((az_failure_duration))
               - "--arn"
-              - "arn:aws:iam::532889539897:role/bootstrap"
+              - ((bootstrap_role))
+
+  - name: cost
+    serial: true
+    plan:
+      - get: every-30-s
+        trigger: true
+
+      - try:
+        task: cost
+        config:
+          params:
+              TEAM: ((team))
+              POINTS: ((cost))
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: alexkinnanegds/az_failure
+          run:
+            path: /app/cost.py
+            args:
+              - "--region"
+              - eu-west-2
+              - "--arn"
+              - ((bootstrap_role))
+
 
   - name: troll
     serial: true
     plan:
-      # - get: every-120-s
-      #   trigger: true
+      - get: every-60-s
+        trigger: true
 
       - try:
         task: Send a troll and check they get logged
