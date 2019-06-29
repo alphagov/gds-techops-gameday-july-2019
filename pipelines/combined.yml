@@ -21,10 +21,10 @@ resources:
     source:
       interval: 30s
 
-  - name: every-60-s
-    type: time
-    source:
-      interval: 60s
+  # - name: every-60-s
+  #   type: time
+  #   source:
+  #     interval: 60s
 
   - name: every-120-s
     type: time
@@ -288,8 +288,8 @@ jobs:
   - name: troll
     serial: true
     plan:
-      - get: every-60-s
-        trigger: true
+      # - get: every-60-s
+      #   trigger: true
 
       - try:
         task: Send a troll and check they get logged

@@ -40,9 +40,9 @@ slim_deployment:
 
 
 zip: clean add_deps slim_deployment
-	cd .target; zip -9 ../scoreboard_layer1.zip -r -@ < ../layer1
-	cd .target; zip -9 ../scoreboard_layer2.zip -r -@ < ../layer2
-	cd src; zip -9 ../scoreboard.zip -r .
+	cd .target; zip -X -9 ../scoreboard_layer1.zip -r -@ < ../layer1
+	cd .target; zip -X -9 ../scoreboard_layer2.zip -r -@ < ../layer2
+	cd src; zip -X -9 ../scoreboard.zip -r .
 
 deploy: zip
 	cd terraform/firebreak-q1-event-normalisation; terraform apply

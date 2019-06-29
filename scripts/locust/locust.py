@@ -6,15 +6,17 @@ import re
 import names
 import os
 import math
+import random
 
 
 class WebsiteTasks(TaskSet):
     team = os.environ.get("TEAM", "one")
     difficulty = int(os.environ.get("APP_DIFFICULTY", 17))
     points = int(os.environ.get("POINTS", 1))
-    scale_up = int(os.environ.get("SWARM_SCALE_UP", 5))
-    scale_down = int(os.environ.get("SWARM_SCALE_DOWN", 1))
+    scale_up = int(os.environ.get("SWARM_SCALE_UP", 10))
+    scale_down = int(os.environ.get("SWARM_SCALE_DOWN", 3))
     timeout = int(os.environ.get("TIMEOUT", 8))
+    chance = int(os.environ.get("CHANCE", 30))
 
     def setup(self):
         r = runners.locust_runner
@@ -38,15 +40,16 @@ class WebsiteTasks(TaskSet):
                     response.status_code == 200
                 ), f"FAILED! status_code: {response.status_code}"
                 self.valid_receipt(response, name)
-                self.send_points(1)
                 r.success += 1
+                if self.chance > random.randint(1, 100):
+                    self.send_points(1)
             except AssertionError as e:
                 print(e, end="")
                 response.failure(e)
                 r.failures += 1
             self.scale()
 
-    @task(120)
+    @task(10)
     def index(self):
         r = runners.locust_runner
 
@@ -58,7 +61,7 @@ class WebsiteTasks(TaskSet):
                 r.failures += 1
                 self.scale()
 
-    @task(30)
+    @task(5)
     def stats(self):
         r = runners.locust_runner
 
@@ -83,15 +86,12 @@ class WebsiteTasks(TaskSet):
         elif r.failures >= self.scale_down:
             if r.num_clients > 1:
                 self.send_points(-r.user_count)
-                r.backoff += 10
 
-                kill = math.ceil(r.user_count / 100.0 * r.backoff)
+                kill = math.ceil(r.user_count / 100.0 * 60)
                 r.start_hatching(max(r.user_count - kill, 1))
 
                 print(f"A locust dies: {r.user_count - 1} locusts")
 
-                if r.user_count == 1:
-                    r.backoff -= 1
             r.failures = 0
 
     def valid_receipt(self, response, name):
@@ -127,6 +127,6 @@ class WebsiteTasks(TaskSet):
 
 class WebsiteUser(HttpLocust):
     task_set = WebsiteTasks
-    min_wait = 100
-    max_wait = 400
+    min_wait = 50
+    max_wait = 300
     timeout = 30
