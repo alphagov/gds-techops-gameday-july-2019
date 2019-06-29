@@ -4,7 +4,7 @@ require 'uri'
 require 'digest'
 APP_URL    = ENV.fetch('APP_URL')
 IDENTIFIER = ENV.fetch('IDENTIFIER')
-DIFFICULTY = ENV.fetch('APP_DIFFICULTY', 1)
+DIFFICULTY = ENV.fetch('APP_DIFFICULTY', 1).to_i
 
 puts '[*] Making request'
 first_name = 'Smoke-01'
@@ -31,7 +31,7 @@ if sha2 != expected
   exit 1
 end
 
-unless sha2.hex.to_s(2).rjust(sha2.size*4, '0').starts_with?('0' * DIFFICULTY)
+unless sha2.hex.to_s(2).rjust(sha2.size*4, '0').start_with?('0' * DIFFICULTY)
   puts "[!] Reciept is not difficult enough!"
   exit 2
 end

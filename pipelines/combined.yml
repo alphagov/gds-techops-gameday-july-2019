@@ -269,7 +269,8 @@ jobs:
               SPLUNK_USER: admin
               SPLUNK_PASS: ((splunk_pass))
               TROLL_POINTS: ((troll_points))
-              ENV: dev
+              SPLUNK_TOKEN: ((splunk_token))
+              ENV: prod
 
           platform: linux
           image_resource:

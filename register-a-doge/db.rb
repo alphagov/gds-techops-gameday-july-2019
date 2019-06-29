@@ -69,7 +69,7 @@ class Registration < ActiveRecord::Base
     difficulty = ENV.fetch('APP_DIFFICULTY', 1).to_i
     sha2 = ''
     code = 0
-    until sha2.hex.to_s(2).rjust(sha2.size*4, '0').starts_with?('0' * difficulty)
+    until sha2.hex.to_s(2).rjust(sha2.size*4, '0').start_with?('0' * difficulty)
       code += 1
       sha2 = Digest::SHA2.hexdigest "#{first_name}#{last_name}#{code.to_s}"
     end

@@ -12,7 +12,7 @@ import boto3
 
 APP_DIFFICULTY = int(os.environ.get("APP_DIFFICULTY", 17))
 SPLUNK_HEC = os.environ.get(
-    "SPLUNK_URL", "https://hec.zero.game.gds-reliability.engineering/services/collector"
+    "SPLUNK_HEC", "https://hec.zero.game.gds-reliability.engineering/services/collector"
 )
 SPLUNK_HOST = os.environ.get(
     "SPLUNK_URL", "splunk-admin.zero.game.gds-reliability.engineering"
@@ -66,12 +66,7 @@ def check_in_splunk(troll):
     q = f"search index=\"gameday-{TEAM}\" first_name=\"{troll['first_name']}\" last_name=\"{troll['last_name']}\""
     r = s.jobs.oneshot(q)
 
-    # Get the results and display them using the ResultsReader
-    reader = results.ResultsReader(r)
-    r = []
-    for item in reader:
-        r.append(item)
-    return r
+    return [item for item in results.ResultsReader(r)]
 
 
 def valid_registration(name):
@@ -105,7 +100,7 @@ troll = troll_name()
 
 if ENV == "dev":
     troll = get_registration(troll, APP_DIFFICULTY)
-    send_to_splunk(troll)
+    r = send_to_splunk(troll)
 else:
     r = requests.post(
         f"https://{TEAM}.game.gds-reliability.engineering/register", troll
@@ -117,6 +112,8 @@ time.sleep(10)
 
 r = check_in_splunk(troll)
 
+assert r, "No Splunk results"
+
 if valid_registration(json.loads(r[0]["_raw"])):
-    print(f"Awarding {TROLL_POINTS} points")
+    print(f"Found troll! Awarding {TROLL_POINTS} points")
     send_points(TROLL_POINTS)

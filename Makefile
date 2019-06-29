@@ -92,7 +92,8 @@ local_smoketest:
 	- cd scripts; APP_URL=http://localhost:4567 IDENTIFIER=test APP_DIFFICULTY=17 ./smoke.rb
 
 # Smoke test local app
-local_smoke: local_runapp
+local_smoke:
+	cd register-a-doge; bundle install --path vendor/bundle; APP_DIFFICULTY=17 bundle exec rackup & sleep 3
 	- cd scripts; APP_URL=http://localhost:4567 IDENTIFIER=test APP_DIFFICULTY=17 ./smoke.rb
 	pkill -9 -f rackup
 
