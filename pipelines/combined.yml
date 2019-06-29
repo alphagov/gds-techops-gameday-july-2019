@@ -5,17 +5,25 @@ groups:
 
   - name: admin
     jobs:
-      - splunk
-      - backfill-db
       - base-traffic
       - load-test
+      - load-test-end-game
+      - backfill-db
+      - splunk
       - az_failure
+      - gdpr-check
+      - troll
 
 resources:
-  - name: every-30-s
+  # - name: every-60-s
+  #   type: time
+  #   source:
+  #     interval: 60s
+
+  - name: every-120-s
     type: time
     source:
-      interval: 30s
+      interval: 120s
 
   - name: gds-techops-gameday-git
     type: git
@@ -29,18 +37,18 @@ jobs:
     serial: true
     public: true
     plan:
-      - get: every-30-s
+      - get: every-120-s
         trigger: true
 
       - get: gds-techops-gameday-git
 
       - task: smoke
-        timeout: 120s
+        timeout: 60s
         config:
           params:
             APP_URL: https://((team)).game.gds-reliability.engineering
             IDENTIFIER: gameday-((team))
-            APP_DIFFICULTY: 4
+            APP_DIFFICULTY: ((app_difficulty))
 
           platform: linux
           image_resource:
@@ -59,125 +67,115 @@ jobs:
 
   - name: base-traffic
     serial: true
-    public: true
     plan:
       - try:
-        task: 2-users-per-second
-        config: &load-test-config
+        task: swarm
+        config:
           params:
-            TARGET: https://((team)).game.gds-reliability.engineering/register
-            RPS: 2
-            DURATION: 90m
+            TEAM: ((team))
+            APP_DIFFICULTY: ((app_difficulty))
+            POINTS: ((points))
+            SWARM_SCALE_UP: ((swarm_scale_up))
+            SWARM_SCALE_DOWN: ((swarm_scale_down))
 
           platform: linux
           image_resource:
             type: docker-image
             source:
-              repository: alexkinnanegds/lt
-          run:
-            path: /test/lt
-      - try:
-        task: 15-users-per-second
-        config: &load-test-config
-          params:
-            TARGET: https://((team)).game.gds-reliability.engineering/register
-            RPS: 15
-            DURATION: 2h
+              repository: alexkinnanegds/locust
 
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: alexkinnanegds/lt
           run:
-            path: /test/lt
-      - try:
-        task: 30-users-per-second
-        config: &load-test-config
-          params:
-            TARGET: https://((team)).game.gds-reliability.engineering/register
-            RPS: 30
-            DURATION: 3h
-
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: alexkinnanegds/lt
-          run:
-            path: /test/lt
+            path: /usr/local/bin/locust
+            args:
+              - "--locustfile=/app/locust.py"
+              - "--clients=1"
+              - "--hatch-rate=1"
+              - "--no-web"
+              - "--host=https://((team)).game.gds-reliability.engineering"
 
   - name: load-test
     serial: true
-    public: true
     plan:
       - try:
-          task: 25-users-per-second
+          task: Agressive Swarm
           config:
-            <<: *load-test-config
             params:
-              TARGET: https://((team)).game.gds-reliability.engineering/register
-              RPS: 25
-              DURATION: 2m
+              TEAM: ((team))
+              APP_DIFFICULTY: ((app_difficulty))
+              POINTS: ((points))
+              SWARM_SCALE_UP: 5
+              SWARM_SCALE_DOWN: 5
 
+            platform: linux
+            image_resource:
+              type: docker-image
+              source:
+                repository: alexkinnanegds/locust
+
+            run:
+              path: /usr/local/bin/locust
+              args:
+                - "--locustfile=/app/locust.py"
+                - "--clients=5"
+                - "--hatch-rate=1"
+                - "--no-web"
+                - "--run-time=15m"
+                - "--host=https://((team)).game.gds-reliability.engineering"
+
+  - name: load-test-end-game
+    serial: true
+    plan:
       - try:
-          task: 50-users-per-second
+          task: END GAME
           config:
-            <<: *load-test-config
             params:
-              TARGET: https://((team)).game.gds-reliability.engineering/register
-              RPS: 50
-              DURATION: 2m
+              TEAM: ((team))
+              APP_DIFFICULTY: ((app_difficulty))
+              POINTS: ((points))
+              SWARM_SCALE_UP: 3
+              SWARM_SCALE_DOWN: 5
 
+            platform: linux
+            image_resource:
+              type: docker-image
+              source:
+                repository: alexkinnanegds/locust
+
+            run:
+              path: /usr/local/bin/locust
+              args:
+                - "--locustfile=/app/locust.py"
+                - "--clients=40"
+                - "--hatch-rate=3"
+                - "--no-web"
+                - "--run-time=15m"
+                - "--host=https://((team)).game.gds-reliability.engineering"
+
+  - name: gdpr-check
+    serial: true
+    plan:
       - try:
-          task: 100-users-per-second
+          task: gdpr-check
           config:
-            <<: *load-test-config
             params:
-              TARGET: https://((team)).game.gds-reliability.engineering/register
-              RPS: 100
-              DURATION: 2m
+              TEAM: ((team))
+              POINTS: ((gdpr_points))
+              DB_HOST: ((db_host))
+              DB_NAME: app
+              DB_USER: app
+              DB_PASS: ((database_password))
 
-      - try:
-          task: 250-users-per-second
-          config:
-            <<: *load-test-config
-            params:
-              TARGET: https://((team)).game.gds-reliability.engineering/register
-              RPS: 250
-              DURATION: 1m
+            platform: linux
+            image_resource:
+              type: docker-image
+              source:
+                repository: alexkinnanegds/gdpr-check
 
-      - try:
-          task: 100-users-per-second
-          config:
-            <<: *load-test-config
-            params:
-              TARGET: https://((team)).game.gds-reliability.engineering/register
-              RPS: 100
-              DURATION: 1m
-
-      - try:
-          task: 50-users-per-second
-          config:
-            <<: *load-test-config
-            params:
-              TARGET: https://((team)).game.gds-reliability.engineering/register
-              RPS: 50
-              DURATION: 1m
-
-      - try:
-          task: 25-users-per-second
-          config:
-            <<: *load-test-config
-            params:
-              TARGET: https://((team)).game.gds-reliability.engineering/register
-              RPS: 25
-              DURATION: 1m
-
+            run:
+              path: /app/gdpr_check.py
 
   - name: backfill-db
     serial: true
-    public: true
     plan:
       - get: gds-techops-gameday-git
 
@@ -205,7 +203,6 @@ jobs:
 
   - name: splunk
     serial: true
-    public: true
     plan:
       - get: gds-techops-gameday-git
 
@@ -234,7 +231,6 @@ jobs:
 
   - name: az_failure
     serial: true
-    public: true
     plan:
       - try:
         task: Disable AZ A
@@ -250,8 +246,37 @@ jobs:
               - "--region"
               - eu-west-2
               - "--az"
-              - a
+              - ((az_failure_zone))
               - "--duration"
-              - 60
+              - ((az_failure_duration))
               - "--arn"
               - "arn:aws:iam::532889539897:role/bootstrap"
+
+  - name: troll
+    serial: true
+    plan:
+      # - get: every-120-s
+      #   trigger: true
+
+      - try:
+        task: Send a troll and check they get logged
+        config:
+          params:
+              TEAM: ((team))
+              APP_DIFFICULTY: ((app_difficulty))
+              POINTS: ((points))
+              SPLUNK_HOST: splunk-admin.zero.game.gds-reliability.engineering
+              SPLUNK_USER: admin
+              SPLUNK_PASS: ((splunk_pass))
+              TROLL_POINTS: ((troll_points))
+              ENV: dev
+
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: alexkinnanegds/troll
+          run:
+            path: /usr/local/bin/python
+            args:
+              - /app/troll.py
