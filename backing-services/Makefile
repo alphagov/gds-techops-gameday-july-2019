@@ -43,7 +43,7 @@ slim_deployment:
 	find .target -type f -a -name '*.rst' -print0 | xargs -0 rm -f
 
 zip: clean add_deps copy_src slim_deployment
-	cd .target; zip -9 ../gde-docs.zip -r .
+	cd .target; zip -X -9 ../gde-docs.zip -r .
 
 deploy: zip
 	cd terraform/firebreak-q1-event-normalisation; terraform apply

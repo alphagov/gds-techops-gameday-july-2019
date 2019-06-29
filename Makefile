@@ -42,6 +42,8 @@ docker_push_az_failure: docker_build_az_failure
 docker_run_az_failure: docker_build_az_failure
 	docker run -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SESSION_TOKEN="${AWS_SESSION_TOKEN}" alexkinnanegds/az_failure
 
+update_all: docker_push_troll docker_push_gdpr-check docker_push_locust docker_push_doge concourse_update_all docs_make scoreboard_make terraform_controller terraform_app
+
 # Update team `one` concourse pipeline
 # Download `fly` from concourse landing page
 # https://concourse.zero.game.gds-reliability.engineering/api/v1/cli?arch=amd64&platform=linux
