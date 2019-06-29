@@ -91,6 +91,7 @@ resource "aws_iam_role_policy_attachment" "gameday_vo" {
 
 
 resource "aws_iam_role" "lambda" {
+  provider = "aws.${var.provider_role_alias}"
   name = "lambda"
 
   assume_role_policy = <<EOF
@@ -111,6 +112,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "lambda-policy" {
+  provider = "aws.${var.provider_role_alias}"
   role       = "${aws_iam_role.lambda.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
