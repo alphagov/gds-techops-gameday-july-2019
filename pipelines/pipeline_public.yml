@@ -4,10 +4,10 @@ groups:
       - smoke-test
 
 resources:
-  - name: every-120-s
-    type: time
-    source:
-      interval: 120s
+  # - name: every-120-s
+  #   type: time
+  #   source:
+  #     interval: 120s
 
   - name: gds-techops-gameday-git
     type: git
@@ -21,8 +21,8 @@ jobs:
     serial: true
     public: true
     plan:
-      - get: every-120-s
-        trigger: true
+      # - get: every-120-s
+      #   trigger: true
 
       - get: gds-techops-gameday-git
 
