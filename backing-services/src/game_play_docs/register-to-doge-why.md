@@ -6,6 +6,6 @@ _Register to..._
 Because this sounds like a Government thing!
 
 _...Doge_  
-Because the _Internet_ decided that the below dog should be called 'doge' and became a popular meme:
+Because the _Internet_ decided that the below dog should be called 'doge' and it became a popular [meme](https://knowyourmeme.com/memes/doge):
 
 ![Doge!](https://i.kym-cdn.com/entries/icons/mobile/000/013/564/doge.jpg)
