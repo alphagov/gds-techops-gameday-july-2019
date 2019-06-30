@@ -1,0 +1,13 @@
+team: one
+app_difficulty: 17
+points: 1
+cost: 1
+gdpr_points: 5
+troll_points: 20
+swarm_scale_up: 90
+swarm_scale_down: 380
+az_failure_zone: a
+az_failure_duration: 60
+chance: 15
+
+#70/200

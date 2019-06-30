@@ -1,0 +1,50 @@
+groups:
+  - name: monitoring
+    jobs:
+      - smoke-test
+
+resources:
+  - name: every-120-s
+    type: time
+    source:
+      interval: 120s
+
+  - name: gds-techops-gameday-git
+    type: git
+    source:
+      uri: git@github.com:tlwr/gds-techops-gameday.git
+      branch: master
+      private_key: ((read_only_ssh_private_key))
+
+jobs:
+  - name: smoke-test
+    serial: true
+    public: true
+    plan:
+      - get: every-120-s
+        trigger: true
+
+      - get: gds-techops-gameday-git
+
+      - task: smoke
+        timeout: 60s
+        config:
+          params:
+            APP_URL: https://((team)).game.gds-reliability.engineering
+            IDENTIFIER: gameday-((team))
+            APP_DIFFICULTY: ((app_difficulty))
+
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: ruby
+              tag: '2.6'
+
+          inputs:
+            - name: gds-techops-gameday-git
+
+          run:
+            path: ruby
+            dir: gds-techops-gameday-git
+            args: ['scripts/smoke.rb']

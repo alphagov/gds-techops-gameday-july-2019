@@ -1,3 +1,5 @@
+update_all: docker_push_troll docker_push_gdpr-check docker_push_locust docker_push_doge concourse_update_all docs_make scoreboard_make terraform_controller terraform_app
+
 docs_make:
 	cd backing-services; make
 
@@ -42,22 +44,22 @@ docker_push_az_failure: docker_build_az_failure
 docker_run_az_failure: docker_build_az_failure
 	docker run -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" -e AWS_SESSION_TOKEN="${AWS_SESSION_TOKEN}" alexkinnanegds/az_failure
 
-update_all: docker_push_troll docker_push_gdpr-check docker_push_locust docker_push_doge concourse_update_all docs_make scoreboard_make terraform_controller terraform_app
 
 # Update team `one` concourse pipeline
 # Download `fly` from concourse landing page
 # https://concourse.zero.game.gds-reliability.engineering/api/v1/cli?arch=amd64&platform=linux
 # https://concourse.zero.game.gds-reliability.engineering/api/v1/cli?arch=amd64&platform=darwin
 # Run login before any other tasks
-concourse_login:
-	fly login --concourse-url https://concourse.zero.game.gds-reliability.engineering/ -t main
 
-concourse_update_1:
-	cd pipelines; fly -t main set-pipeline -c combined.yml -p team-one --load-vars-from variables.yml
+teams=one two three four five six seven eight
 
-# Update all team's concourse pipelines
-# You have to be logged in to the concourse instance
-concourse_update_all:concourse_update_1
+concourse_sp_teams = $(addprefix concourse_sp_, $(teams))
+concourse_update_all: $(teams)
+
+concourse_sp_%:
+	cd pipelines; fly -t main set-pipeline -n -c pipeline_admin.yml -p team_$*_admin --load-vars-from team_$*.yml
+	cd pipelines; fly -t main set-pipeline -n -c pipeline_public.yml -p team_$* --load-vars-from team_$*.yml
+	cd pipelines; fly -t main expose-pipeline -p team_$*
 
 # Update the admin account: route53 / state bucket
 terraform_account:
