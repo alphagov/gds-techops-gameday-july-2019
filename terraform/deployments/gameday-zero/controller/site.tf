@@ -42,3 +42,11 @@ output "hec_url" {
 output "splunk_admin_password" {
   value = "${module.controller.splunk_admin_password}"
 }
+
+output "concourse_db_host" {
+  value = "${module.controller.concourse_db_host}"
+}
+
+output "concourse_db_password" {
+  value = "${module.controller.concourse_db_password}"
+}

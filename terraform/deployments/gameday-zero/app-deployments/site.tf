@@ -120,3 +120,27 @@ output "database_password" {
 output "deployment_one_db_host" {
   value = "${module.app_deployment_one.db_host}"
 }
+
+output "deployment_two_db_host" {
+  value = "${module.app_deployment_two.db_host}"
+}
+
+output "deployment_three_db_host" {
+  value = "${module.app_deployment_three.db_host}"
+}
+
+output "deployment_four_db_host" {
+  value = "${module.app_deployment_four.db_host}"
+}
+
+output "deployment_five_db_host" {
+  value = "${module.app_deployment_five.db_host}"
+}
+
+output "deployment_six_db_host" {
+  value = "${module.app_deployment_six.db_host}"
+}
+
+output "deployment_seven_db_host" {
+  value = "${module.app_deployment_seven.db_host}"
+}

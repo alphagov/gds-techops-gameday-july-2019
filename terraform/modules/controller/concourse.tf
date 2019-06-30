@@ -107,3 +107,11 @@ output "concourse_password" {
 output "concourse_url" {
   value = "https://concourse.${local.fqdn}"
 }
+
+output "concourse_db_password" {
+  value = "${random_string.concourse_postgres_password.result}"
+}
+
+output "concourse_db_host" {
+  value = "${aws_db_instance.concourse.address}"
+}
