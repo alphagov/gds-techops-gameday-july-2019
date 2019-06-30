@@ -108,7 +108,7 @@ else:
     assert r.status_code == 200, "Could not send troll to team {TEAM}"
 
 print(troll)
-time.sleep(10)
+time.sleep(50)
 
 r = check_in_splunk(troll)
 

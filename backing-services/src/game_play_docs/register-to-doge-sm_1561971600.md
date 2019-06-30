@@ -6,7 +6,7 @@
 
 The application source code is available here: <https://github.com/tlwr/register-a-doge> 🐶
 
-Register to Doge is written in [Ruby](https://www.ruby-lang.org/en/documentation/) (v2.6.3) with [Sinatra](http://sinatrarb.com/) - a DSL (Domain-Specific Language) for writing web applications.  
+Register to Doge is written in [Ruby](https://www.ruby-lang.org/en/documentation/) (v2.6.3) with [Sinatra](http://sinatrarb.com/) - a DSL (Domain-Specific Language) for writing web applications.
 The database engine is [PostgreSQL](https://www.postgresql.org/).
 
 ----
@@ -25,11 +25,12 @@ CloudWatch provides log visibility.
 
 There is no infrastructure-as-code set up - building of the instance is done using **Cloud-Init** (user-data) - see [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html) for details.
 
+
 ----
 
 ### Monitoring
 
-There is some monitoring run by a different department, which you can view but not access:  
+There is some monitoring run by a different department, which you can view but not access:
 <https://concourse.zero.game.gds-reliability.engineering/>
 
 ----
@@ -44,3 +45,8 @@ There is some monitoring run by a different department, which you can view but n
 3. Clone the Incident Retro: redacted
   - Share with your team
   - Spend 15 minutes going through with a facilitator
+
+
+### Scoring
+- Serving requests scores points.
+- Running AWS infrastructure costs points.

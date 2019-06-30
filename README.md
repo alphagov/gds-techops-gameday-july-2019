@@ -86,40 +86,32 @@ Slack message:
 
 TODO LINK TO STAKEHOLDER GUIDE
 
-### 11:30 - Base traffic increases to 15 RPS
-This is going to break most peoples infrastructure but they should be
-able to out scale it. (NEEDS TESTING)
-
-### 11:50 - Send out comms for GDPR
+### 11:30 - Send out comms for GDPR
 email / slack the teams for the GDPR request. Bonus points for the
 quickest team to complete the task.
 
-### 12:10 - Announce detection of forged doge registrations
+### 11:45 - Announce GDPR Request
 Slack message:
 :gdpr: :siren: You need to make the required changes to comply with GDPR! redacted :gdpr: :siren:
 
 Answers to the google form are here: redacted
 
-### 12:20 - Announce detection of forged doge registrations
-People are forging doge registations! At 12:30 we are going to
-increase the registration code algorithm difficulty to `6`.
+### 12:00 - Announce detection of forged doge registrations
+People are submitting false doge registrations!
 
 Slack message:
-:siren: It's been brought to out attention that people may be forging doge registrations! Please investigate. :siren:
+:siren: It's been brought to out attention that people may be submitting false doge registrations! Please investigate. :siren:
 
-### 12:30 - Increase algorithm difficulty
+### 12:10 - Ask teams to send troll logs to splunk
+Direct the teams to the false_registraions docs page for further details.
 
-``` shell
-sed -i pipelines/combined.yml 's/APP_DIFFICULTY: 4/APP_DIFFICULTY: 5/
-make concourse_update_all
-```
+https://docs.zero.game.gds-reliability.engineering/docs/false_registrations
 
-### 13:00 - Ask teams to send troll logs to splunk
-Teams will need to send any
-### 13:30g - Base traffic increases to 30 RPS
-This is going to break most peoples infrastructure but they should be
-able to out scale it. (NEEDS TESTING)
+### 13:00 - Change of techops strategy
 
+Ec2 is no longer cool. Lets move every thing to Serverless! That's
+lambda not containers. To encourge teams to move we will be increasing
+the cost of running ec2 instances.
 
 
 ## App difficulty
@@ -140,3 +132,25 @@ the smoke test in `pipelines/combined.yml` and redploy the pipeline.
 ``` shell
 make concourse_update_((team))
 ```
+## Scoreboard.
+The scoreboard uses a dynamodb for it's datastore. If it slows down
+then check the read/write capacity and increase as needed
+https://eu-west-2.console.aws.amazon.com/dynamodb/home?region=eu-west-2#tables:selected=gameday_team_points;tab=metrics.
+
+
+### Scoring
+
+Serving requests from `/reqister` will earn points. This is part of
+the `locust` concourse job.
+
+Running ec2 instances will cost points. Bigger instances cost
+more.
+
+Going over 5 instances makes everything increase in price.
+
+Once the GDPR job is activated having specific PII entries in the
+database will cause a point penalty. The specific entries that
+shouldn't be in the database are any people who have an `a` in their
+first name and a `z` in their last name.
+
+Correctly send a Troll request to splunk will earn points.
