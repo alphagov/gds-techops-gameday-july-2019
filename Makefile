@@ -52,19 +52,25 @@ docker_run_az_failure: docker_build_az_failure
 # Run login before any other tasks
 
 teams=one two three four five six seven
-
 concourse_sp_teams = $(addprefix concourse_sp_, $(teams))
 concourse_update_all: $(concourse_sp_teams)
 
 concourse_sp_%:
-	# cd pipelines; fly -t main dp -n -p team_$*_admin
-	# cd pipelines; fly -t main dp -n -p team_$*
+# cd pipelines; fly -t main dp -n -p team_$*_admin
+# cd pipelines; fly -t main dp -n -p team_$*
 	cd pipelines; fly -t main set-pipeline -n -c pipeline_admin.yml -p team_$*_admin --load-vars-from team_$*.yml
 	cd pipelines; fly -t main set-pipeline -n -c pipeline_public.yml -p team_$* --load-vars-from team_$*.yml
-	# cd pipelines; fly -t main expose-pipeline -p team_$*
-	# cd pipelines; fly -t main up -p team_$*
-	# cd pipelines; fly -t main up -p team_$*_admin
-# Update the admin account: route53 / state bucket
+# cd pipelines; fly -t main expose-pipeline -p team_$*
+# cd pipelines; fly -t main up -p team_$*
+# cd pipelines; fly -t main up -p team_$*_admin
+
+concourse_bt_teams = $(addprefix concourse_bt_, $(teams))
+concourse_bt_all: $(concourse_bt_teams)
+
+concourse_bt_%:
+	fly -t main trigger-job -j team_$*_admin/base-traffic
+
+
 terraform_account:
 	cd terraform/deployments/gameday-zero/account; terraform apply
 
