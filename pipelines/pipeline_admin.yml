@@ -12,15 +12,15 @@ groups:
       - cost
 
 resources:
-  - name: every-30-s
-    type: time
-    source:
-      interval: 30s
-
   - name: every-60-s
     type: time
     source:
       interval: 60s
+
+  - name: every-120-s
+    type: time
+    source:
+      interval: 120s
 
   - name: gds-techops-gameday-git
     type: git
@@ -43,6 +43,7 @@ jobs:
             SWARM_SCALE_UP: ((swarm_scale_up))
             SWARM_SCALE_DOWN: ((swarm_scale_down))
             CHANCE: ((chance))
+            TIMEOUT: 10
 
           platform: linux
           image_resource:
@@ -221,7 +222,7 @@ jobs:
   - name: cost
     serial: true
     plan:
-      - get: every-30-s
+      - get: every-120-s
         trigger: true
 
       - try:

@@ -13,9 +13,9 @@ TEAM = os.environ.get("TEAM", "one")
 COST = {
     "t3.nano": POINTS,
     "t3.micro": POINTS * 2,
-    "t3.small": POINTS * 4,
-    "t3.medium": POINTS * 8,
-    "t2.medium": POINTS * 8,
+    "t3.small": POINTS * 3,
+    "t3.medium": POINTS * 4,
+    "t2.medium": POINTS * 4,
 }
 
 
