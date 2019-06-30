@@ -10,6 +10,7 @@ groups:
       - gdpr-check
       - troll
       - cost
+      - hide_splunk_key
 
 resources:
   - name: every-60-s
@@ -218,6 +219,22 @@ jobs:
               - ((az_failure_duration))
               - "--arn"
               - ((bootstrap_role))
+
+  - name: hide_splunk_key
+    serial: true
+    plan:
+      - try:
+        task: hide_the_key
+        config:
+          params:
+            ARN: ((bootstrap_role))
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: alexkinnanegds/az_failure
+          run:
+            path: /app/splunk_token.py
 
   - name: cost
     serial: true

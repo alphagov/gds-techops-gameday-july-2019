@@ -9,6 +9,17 @@ import zlib
 import base64
 import boto3
 
+
+def assume_role(arn):
+    client = boto3.client("sts")
+    response = client.assume_role(RoleArn=arn, RoleSessionName="az_failure")
+
+    return boto3.session.Session(
+        aws_access_key_id=response["Credentials"]["AccessKeyId"],
+        aws_secret_access_key=response["Credentials"]["SecretAccessKey"],
+        aws_session_token=response["Credentials"]["SessionToken"],
+    )
+
 TEAM = os.environ.get("TEAM", "one")
 
 # KEY is Splunk index name
@@ -35,7 +46,8 @@ _compressed = zlib.compress(_json)
 _b64 = base64.b64encode(_compressed)
 
 # store in SSM
-client = boto3.client("ssm", region_name="us-east-1")
+session = assume_role(os.environ.get("ARN", "arn:aws:iam::532889539897:role/bootstrap"))
+client = session.client("ssm", region_name="us-east-1")
 client.put_parameter(
     Name="SplunkKey", Type="SecureString", Value=_b64.decode("ascii"), Overwrite=True
 )
