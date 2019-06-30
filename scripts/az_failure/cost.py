@@ -56,7 +56,7 @@ def main(region, arn):
     ]
 
     if len(total) > 5:
-        total.append([POINTS * 2 * i for i in total[5:]]
+        total.append([POINTS * 2 * i for i in total[5:]])
     print(total)
     send_points(-sum(total))
 

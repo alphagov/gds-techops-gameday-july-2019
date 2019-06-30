@@ -263,7 +263,6 @@ jobs:
 
 
   - name: troll
-    serial: true
     plan:
       - get: every-60-s
         trigger: true
