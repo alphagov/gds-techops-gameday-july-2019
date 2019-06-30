@@ -53,6 +53,7 @@ def send_docs(login_details, path=False):
         folder = abspath("src/game_play_docs")
     else:
         folder = abspath("game_play_docs")
+
     # build a list of files in the game_play_docs folder
     onlyfiles = list()
     for (dirpath, dirnames, filenames) in os.walk(folder):
@@ -61,6 +62,7 @@ def send_docs(login_details, path=False):
     # this block checks for files and returns the appropriate file based on
     # the timestamp - so if the file ends with a "_DIGIT.md" then the digit
     # is parsed and sets ret_file if older than the current timestamp.
+    current_time = time.time()
     ret_file = False
     for file in sorted(onlyfiles):
         if file.startswith(join(folder, path)) and file.endswith(".md"):
@@ -68,7 +70,7 @@ def send_docs(login_details, path=False):
             if "_" in file:
                 timestamp = file.replace(".md", "").split("_")[-1:][0]
                 if timestamp.isdigit():
-                    if float(timestamp) < time.time():
+                    if float(timestamp) < current_time:
                         ret_file = file
             else:
                 ret_file = file

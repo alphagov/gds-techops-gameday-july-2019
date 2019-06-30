@@ -1,4 +1,4 @@
-[back...](/docs)  
+[Games](/docs) | **Register to Doge Home** | [Teams](/docs/register-to-doge-teams) | [Tasks](/docs/register-to-doge-tasks) | [Service Manual](/docs/register-to-doge-sm) | [Why _'Register to Doge'_ ?](/docs/register-to-doge-why)
 
 ## Register to Doge
 
@@ -8,13 +8,15 @@ Your team consists of people from different job roles and skill sets. We recomme
 - User impact
 - Incident management
 
+(use the _Teams_ link above to find out your team information)
+
+----
+
 ### Tasks
 
-[Click here](register-to-doge-tasks) to see your tasks
+Tasks are live! [Click here](register-to-doge-tasks) to see your team tasks
 
-### Teams!
-
-[Click here](register-to-doge-teams) to see teams and account details
+----
 
 ### What you'll need to participate.
 
@@ -32,15 +34,3 @@ Your team consists of people from different job roles and skill sets. We recomme
 - GitHub account linked with alphagov
   - If you haven't got one, create yourself a GitHub account (with MFA!)
   - Post in [#reliability-eng](https://gds.slack.com/messages/CAD6NP598) and ask to be added to alphagov organisation
-
-### Why _'Register to Doge'_?
-
-_Register to..._  
-Because this sounds like a Government thing!
-
-_...Doge_  
-Because the _Internet_ decided that the below dog should be called 'doge' and became a popular meme:
-![Doge!](https://i.kym-cdn.com/entries/icons/mobile/000/013/564/doge.jpg)
-
----
-\# Released at 10am / 1561971600
