@@ -79,20 +79,16 @@ class WebsiteTasks(TaskSet):
         )
 
         if r.success >= self.scale_up:
-            r.start_hatching(r.num_clients + 1)
             r.success = 0
-            print(f"A locust joins the swarm: {r.user_count + 1} locusts")
+            r.start_hatching(r.num_clients + 1)
 
         elif r.failures >= self.scale_down:
-            if r.num_clients > 1:
-                self.send_points(-r.user_count)
-
-                kill = math.ceil(r.user_count / 100.0 * 60)
-                r.start_hatching(max(r.user_count - kill, 1))
-
-                print(f"A locust dies: {r.user_count - 1} locusts")
-
             r.failures = 0
+            if r.num_clients > 1:
+                self.send_points(-r.user_count * 3)
+
+                kill = math.ceil(r.user_count / 100.0 * 80)
+                r.start_hatching(max(r.user_count - kill, 1))
 
     def valid_receipt(self, response, name):
         sha2 = re.search(r"([0-9a-fA-F]{64})", response.text)
