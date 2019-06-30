@@ -13,15 +13,15 @@ groups:
       - hide_splunk_key
 
 resources:
-  - name: every-60-s
-    type: time
-    source:
-      interval: 60s
+  # - name: every-60-s
+  #   type: time
+  #   source:
+  #     interval: 60s
 
-  - name: every-120-s
-    type: time
-    source:
-      interval: 120s
+  # - name: every-120-s
+  #   type: time
+  #   source:
+  #     interval: 120s
 
   - name: gds-techops-gameday-git
     type: git
@@ -239,8 +239,8 @@ jobs:
   - name: cost
     serial: true
     plan:
-      - get: every-120-s
-        trigger: true
+      # - get: every-120-s
+      #   trigger: true
 
       - try:
         task: cost
@@ -264,8 +264,8 @@ jobs:
 
   - name: troll
     plan:
-      - get: every-60-s
-        trigger: true
+      # - get: every-60-s
+      #   trigger: true
 
       - try:
         task: Send a troll and check they get logged
