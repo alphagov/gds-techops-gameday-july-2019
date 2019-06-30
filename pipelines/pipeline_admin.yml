@@ -12,10 +12,15 @@ groups:
       - cost
 
 resources:
-  # - name: every-120-s
-  #   type: time
-  #   source:
-  #     interval: 120s
+  - name: every-30-s
+    type: time
+    source:
+      interval: 30s
+
+  - name: every-60-s
+    type: time
+    source:
+      interval: 60s
 
   - name: gds-techops-gameday-git
     type: git
@@ -216,8 +221,8 @@ jobs:
   - name: cost
     serial: true
     plan:
-      # - get: every-30-s
-      #   trigger: true
+      - get: every-30-s
+        trigger: true
 
       - try:
         task: cost
@@ -242,8 +247,8 @@ jobs:
   - name: troll
     serial: true
     plan:
-      # - get: every-60-s
-      #   trigger: true
+      - get: every-60-s
+        trigger: true
 
       - try:
         task: Send a troll and check they get logged

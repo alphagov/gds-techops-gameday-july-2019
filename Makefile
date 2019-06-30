@@ -51,16 +51,19 @@ docker_run_az_failure: docker_build_az_failure
 # https://concourse.zero.game.gds-reliability.engineering/api/v1/cli?arch=amd64&platform=darwin
 # Run login before any other tasks
 
-teams=one two three four five six seven eight
+teams=one two three four five six seven
 
 concourse_sp_teams = $(addprefix concourse_sp_, $(teams))
-concourse_update_all: $(teams)
+concourse_update_all: $(concourse_sp_teams)
 
 concourse_sp_%:
+	# cd pipelines; fly -t main dp -n -p team_$*_admin
+	# cd pipelines; fly -t main dp -n -p team_$*
 	cd pipelines; fly -t main set-pipeline -n -c pipeline_admin.yml -p team_$*_admin --load-vars-from team_$*.yml
 	cd pipelines; fly -t main set-pipeline -n -c pipeline_public.yml -p team_$* --load-vars-from team_$*.yml
-	cd pipelines; fly -t main expose-pipeline -p team_$*
-
+	# cd pipelines; fly -t main expose-pipeline -p team_$*
+	# cd pipelines; fly -t main up -p team_$*
+	# cd pipelines; fly -t main up -p team_$*_admin
 # Update the admin account: route53 / state bucket
 terraform_account:
 	cd terraform/deployments/gameday-zero/account; terraform apply
