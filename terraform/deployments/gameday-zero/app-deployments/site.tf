@@ -17,11 +17,96 @@ locals {
 module "app_deployment_one" {
   source = "../../../modules/app-deployment"
 
-  provider_role_arn   = "arn:aws:iam::532889539897:role/bootstrap"
+  provider_role_arn   = "arn:aws:iam::redacted:role/bootstrap"
   provider_role_alias = "one"
 
   root_domain = "game.gds-reliability.engineering"
   subdomain   = "one"
+  db_password = "${local.db_password}"
+
+  participants    = []
+  participants_vo = []
+}
+
+
+module "app_deployment_two" {
+  source = "../../../modules/app-deployment"
+
+  provider_role_arn   = "arn:aws:iam::redacted:role/bootstrap"
+  provider_role_alias = "two"
+
+  root_domain = "game.gds-reliability.engineering"
+  subdomain   = "two"
+  db_password = "${local.db_password}"
+
+  participants    = []
+  participants_vo = []
+}
+
+module "app_deployment_three" {
+  source = "../../../modules/app-deployment"
+
+  provider_role_arn   = "arn:aws:iam::redacted:role/bootstrap"
+  provider_role_alias = "three"
+
+  root_domain = "game.gds-reliability.engineering"
+  subdomain   = "three"
+  db_password = "${local.db_password}"
+
+  participants    = []
+  participants_vo = []
+}
+
+module "app_deployment_four" {
+  source = "../../../modules/app-deployment"
+
+  provider_role_arn   = "arn:aws:iam::redacted:role/bootstrap"
+  provider_role_alias = "four"
+
+  root_domain = "game.gds-reliability.engineering"
+  subdomain   = "four"
+  db_password = "${local.db_password}"
+
+  participants    = []
+  participants_vo = []
+}
+
+module "app_deployment_five" {
+  source = "../../../modules/app-deployment"
+
+  provider_role_arn   = "arn:aws:iam::redacted:role/bootstrap"
+  provider_role_alias = "five"
+
+  root_domain = "game.gds-reliability.engineering"
+  subdomain   = "five"
+  db_password = "${local.db_password}"
+
+  participants    = []
+  participants_vo = []
+}
+
+module "app_deployment_six" {
+  source = "../../../modules/app-deployment"
+
+  provider_role_arn   = "arn:aws:iam::redacted:role/bootstrap"
+  provider_role_alias = "six"
+
+  root_domain = "game.gds-reliability.engineering"
+  subdomain   = "six"
+  db_password = "${local.db_password}"
+
+  participants    = []
+  participants_vo = []
+}
+
+module "app_deployment_seven" {
+  source = "../../../modules/app-deployment"
+
+  provider_role_arn   = "arn:aws:iam::redacted:role/bootstrap"
+  provider_role_alias = "seven"
+
+  root_domain = "game.gds-reliability.engineering"
+  subdomain   = "seven"
   db_password = "${local.db_password}"
 
   participants    = []
