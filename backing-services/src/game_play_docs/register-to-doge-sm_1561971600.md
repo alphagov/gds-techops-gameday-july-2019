@@ -45,8 +45,3 @@ There is some monitoring run by a different department, which you can view but n
 3. Clone the Incident Retro: redacted
   - Share with your team
   - Spend 15 minutes going through with a facilitator
-
-
-### Scoring
-- Serving requests scores points.
-- Running AWS infrastructure costs points.

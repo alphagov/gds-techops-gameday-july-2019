@@ -66,7 +66,7 @@ data "template_file" "concourse_init" {
 
 resource "aws_instance" "concourse" {
   ami                  = "${data.aws_ami.amazon_linux_2.id}"
-  instance_type        = "m5.2xlarge"
+  instance_type        = "m5.8xlarge"
   subnet_id            = "${aws_default_subnet.z1.id}"
   iam_instance_profile = "${aws_iam_instance_profile.concourse.name}"
   user_data            = "${data.template_file.concourse_init.rendered}"

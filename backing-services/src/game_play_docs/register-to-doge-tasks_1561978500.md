@@ -17,7 +17,9 @@ See the [Service Manual](/docs/register-to-doge-sm) for some more information on
 
 ----
 
-Next tasking at midday... ![TrollFace](https://i.imgur.com/jWr67J8.png?1)
+#### People are submitting false doge registrations!
+
+See some further information [here](/docs/false-registrations).
 
 ----
 
