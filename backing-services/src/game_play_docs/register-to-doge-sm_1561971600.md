@@ -37,11 +37,13 @@ There is some monitoring run by a different department, which you can view but n
 
 ### Incident
 
-1. Clone the Incident Report Template: redacted
+<<<<<<< HEAD
+1. Edit the Incident Report in your team folder: redacted
+>>>>>>> 9042693... Updated docs link in docs
   - Share with your team
   - Be sure to include all information and times of any decisions
   - If you can, include any decisions you decide not to follow
 2. Once an incident is finished, ensure all information is captured.
-3. Clone the Incident Retro: redacted
+3. Edit the Incident Retro in your team folder: redacted
   - Share with your team
   - Spend 15 minutes going through with a facilitator
