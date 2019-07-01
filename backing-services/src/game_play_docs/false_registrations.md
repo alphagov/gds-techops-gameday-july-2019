@@ -19,6 +19,9 @@ The data needs to be encoded in JSON and have the following keys from the reques
 
 The data needs to be sent to us within 30 seconds of you receiving the request. Problem?
 
+https://splunk.zero.game.gds-reliability.engineering/
+Splunk Username: gameday
+Splunk Password: cae6Ohmaiphai1iu2gah1baugae6quai9eeGhu0mai3Queel2s
 HEC endpoint: https://hec.zero.game.gds-reliability.engineering/services/collector
 HEC token: dWdnY2Y6Ly9xYnBmLm1yZWIudG56ci50cWYtZXJ5dm5vdnl2Z2wucmF0dmFycmV2YXQvcWJwZi85czBzMTMxbjduOTJuNW45cjducDI1cjY5NDA0NnJycg==
 
