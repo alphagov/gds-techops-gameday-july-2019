@@ -1,19 +1,6 @@
-# Ops manual
-## Links
+# GDS TechOps Gameday July 2019
 
-Team docs: https://docs.zero.game.gds-reliability.engineering/docs
-
-Gameday admin repo: https://github.com/tlwr/gds-techops-game day
-
-Public register-a-doge repo: https://github.com/tlwr/register-a-doge
-
-concourse: https://concourse.zero.game.gds-reliability.engineering/
-
-incident timeline template: redacted
-
-retro notes: redacted
-
-scoreboard: https://scoreboard.zero.game.gds-reliability.engineering/
+This is a redacted open sourced version of our gameday which we ran on 1st July 2019 for GDS TechOps.
 
 ## Timeline
 ### 10:00 - Start base traffic job
